@@ -33,3 +33,17 @@ npm run build
 ```sh
 npm run lint
 ```
+
+---
+
+### Firebase 結構規劃
+
+```Firebase
+clientside
+    - charades
+    - countdown
+    - ppt
+        - page // 頁數
+    - rank
+    - wordchain
+```
