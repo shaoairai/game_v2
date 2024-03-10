@@ -1,21 +1,10 @@
 <script>
 import { RouterLink, RouterView } from "vue-router";
 
-// firebase
-import { db } from "@/utils/firebase.js";
-import { ref, set } from "firebase/database";
-
 export default {
   components: {
     RouterLink,
     RouterView,
-  },
-  mounted() {
-    // 使用 ref 方法獲取數據庫的參考
-    const databaseRef = ref(db);
-
-    // 然後您可以使用該參考進行其他操作，比如 set
-    set(databaseRef, { data: "example data222" });
   },
 };
 </script>

@@ -5,6 +5,8 @@ import RankView from "../views/clientside/RankView.vue";
 import CharadesView from "../views/clientside/CharadesView.vue";
 import CountdownView from "../views/clientside/CountdownView.vue";
 import WordchainView from "../views/clientside/WordchainView.vue";
+import RemoteControl from "../views/remoteControl/RemoteControl.vue";
+import PptControl from "../views/remoteControl/controlPages/PptControl.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -38,6 +40,18 @@ const router = createRouter({
       path: "/wordChain",
       name: "wordChain",
       component: WordchainView,
+    },
+    {
+      path: "/remote",
+      name: "remote",
+      component: RemoteControl,
+      children: [
+        {
+          path: "ppt",
+          name: "pptControl",
+          component: PptControl,
+        },
+      ],
     },
   ],
 });

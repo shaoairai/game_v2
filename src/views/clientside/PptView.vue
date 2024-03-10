@@ -1,5 +1,11 @@
 <script>
 import { RouterLink } from "vue-router";
+
+// firebase
+import { db } from "@/utils/firebase.js";
+import { ref, onValue } from "firebase/database";
+import firebaseCrud from "@/utils/firebaseCrud";
+
 import pptImg1 from "@/assets/pptImg/1.jpg";
 import pptImg2 from "@/assets/pptImg/2.jpg";
 import pptImg3 from "@/assets/pptImg/3.jpg";
@@ -24,6 +30,7 @@ import pptImg21 from "@/assets/pptImg/21.jpg";
 import pptImg22 from "@/assets/pptImg/22.jpg";
 
 export default {
+  mixins: [firebaseCrud],
   data() {
     return {
       imgList: [
@@ -62,6 +69,11 @@ export default {
 
       // 全螢幕
       isFullScreen: false,
+
+      // Firebase
+      fpage: 0,
+      // 顯示所有firebase資料
+      displayAllFirbase: "",
     };
   },
   methods: {
@@ -170,11 +182,24 @@ export default {
 
       this.isFullScreen = false;
     },
+    // 即時監聽讀取
+    onReadData() {
+      const vm = this;
+      onValue(ref(db), (snapshot) => {
+        console.log(snapshot.val());
+
+        vm.displayAllFirbase = snapshot.val();
+        vm.currentIndex = snapshot.val().clientside.ppt.page;
+      });
+    },
   },
   components: {
     RouterLink,
   },
-  mounted() {
+  async mounted() {
+    // 即時監聽 Firebase 資料
+    this.onReadData();
+
     // 圖片總數
     this.totalImgsCnt = this.imgList.length;
   },
