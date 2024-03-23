@@ -42,6 +42,8 @@ import {
   faDownLong,
   faSkullCrossbones,
   faWifi,
+  faPeopleArrows,
+  faComments,
 } from "@fortawesome/free-solid-svg-icons";
 // 所有要嵌入的 icon 都要加在這裡
 
@@ -77,7 +79,9 @@ library.add(
   faUpLong,
   faDownLong,
   faSkullCrossbones,
-  faWifi
+  faWifi,
+  faPeopleArrows,
+  faComments
 ); // 所有要嵌入的 icon 都要加在這裡
 
 const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);

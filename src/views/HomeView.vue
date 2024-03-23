@@ -31,6 +31,18 @@ export default {
               比手畫腳
             </li>
           </RouterLink>
+          <RouterLink to="/jump" class="list-a mb-4">
+            <li class="list-group-item fs-4">
+              <font-awesome-icon icon="fa-solid fa-people-arrows" />
+              跳跳 Tempo
+            </li>
+          </RouterLink>
+          <RouterLink to="/selftalk" class="list-a mb-4">
+            <li class="list-group-item fs-4">
+              <font-awesome-icon icon="fa-solid fa-comments" />
+              自說自話
+            </li>
+          </RouterLink>
           <RouterLink to="/countDown" class="list-a mb-4">
             <li class="list-group-item fs-4">
               <font-awesome-icon icon="fa-solid fa-font" /> 急中生字
@@ -38,8 +50,8 @@ export default {
           </RouterLink>
           <RouterLink to="/wordChain" class="list-a mb-4">
             <li class="list-group-item fs-4">
-              <font-awesome-icon icon="fa-solid fa-music" class="me-1" /> Tempo
-              遊戲
+              <font-awesome-icon icon="fa-solid fa-music" class="me-1" />
+              接龍 Tempo
             </li>
           </RouterLink>
         </ul>

@@ -7,6 +7,8 @@ import CountdownView from "../views/clientside/CountdownView.vue";
 import WordchainView from "../views/clientside/WordchainView.vue";
 import RemoteControl from "../views/remoteControl/RemoteControl.vue";
 import PptControl from "../views/remoteControl/controlPages/PptControl.vue";
+import JumpView from "../views/clientside/JumpView.vue";
+import SelftalkView from "../views/clientside/SelftalkView.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -40,6 +42,16 @@ const router = createRouter({
       path: "/wordChain",
       name: "wordChain",
       component: WordchainView,
+    },
+    {
+      path: "/jump",
+      name: "jump",
+      component: JumpView,
+    },
+    {
+      path: "/selftalk",
+      name: "selftalk",
+      component: SelftalkView,
     },
     {
       path: "/remote",
