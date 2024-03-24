@@ -4,12 +4,20 @@ import { RouterLink } from "vue-router";
 export default {
   data() {
     return {
+      // 共要分幾隊
+      teamCnt: 3,
+      // 共要分幾隊暫存
+      teamCntTmp: 2,
+      // 是否修改總隊伍
+      editTeamDisplay: false,
       // 新增人名的輸入框
       text: "",
       // 新增性別輸入框
       sex: "",
       // 顯示的排行資料
       list: [],
+      // 動態數量隊伍命名
+      teamArr: [],
       // 隊伍
       team: "",
       // 編輯名字暫存
@@ -38,6 +46,23 @@ export default {
     };
   },
   methods: {
+    // 修改總共隊伍數量
+    editTeamCnt() {
+      // 開啟修改
+      this.editTeamDisplay = true;
+      this.teamCntTmp = this.teamCnt;
+    },
+    // 確定總共隊伍數量
+    confirmTeamCnt() {
+      // 開啟修改
+      this.editTeamDisplay = false;
+
+      this.teamCnt = this.teamCntTmp;
+
+      // 重新給定組名
+      this.generateTeams();
+      localStorage.setItem("listDataTeams", JSON.stringify(this.teamCnt));
+    },
     // 增加一人資料
     addData() {
       // 建立新的資料
@@ -130,90 +155,94 @@ export default {
         return b.score - a.score;
       });
     },
+    // 動態數量隊伍命名
+    generateTeams() {
+      for (let i = 0; i < this.teamCnt; i++) {
+        this.teamArr.push(String.fromCharCode(65 + i)); // 65 是 'A' 的 Unicode 編碼
+      }
+
+      console.warn(this.teamArr);
+    },
     // 重新分隊
     reallocate() {
       let bool = confirm("確定要重新分隊嗎？");
 
       if (bool) {
-        // 總人數
-        let totalCnt = this.list.length;
-        // 男女生人數
-        let boyCnt = 0;
-        let girlCnt = 0;
-        this.list.forEach((el, i) => {
-          if (el.sex === "1") {
-            boyCnt++;
-          } else {
-            girlCnt++;
-          }
-        });
+        // 暫存分配的人物列表
+        const groupListTmp = [...this.list];
+        // 分別取出男女
+        const boysArray = groupListTmp.filter((el) => el.sex === "1");
+        const girlsArray = groupListTmp.filter((el) => el.sex === "0");
 
-        // 各隊剩餘人數
-        let A_RemainBoy =
-          boyCnt % 2 === 0 ? boyCnt / 2 : Math.floor(boyCnt / 2) + 1;
-        let A_RemainGirl =
-          girlCnt % 2 === 0 ? girlCnt / 2 : Math.floor(girlCnt / 2);
-        let B_RemainBoy =
-          boyCnt % 2 === 0 ? boyCnt / 2 : Math.floor(boyCnt / 2);
-        let B_RemainGirl =
-          girlCnt % 2 === 0 ? girlCnt / 2 : Math.floor(girlCnt / 2) + 1;
+        // console.log("Boys:", boysArray);
+        // console.log("Girls:", girlsArray);
 
-        console.log(
-          `A男：${A_RemainBoy}，A女生：${A_RemainGirl}，B男生：${B_RemainBoy}，B女生：${B_RemainGirl}`
-        );
+        // 各隊輪流分派人
+        let doWhileCnt = 0;
 
-        let teamArr = ["A", "B"];
+        // 男生分派
+        for (let i = 0; i < boysArray.length; i++) {
+          // 抽某位的亂數不重複
+          const noRepeat = [];
+          // 抽亂數
+          let randomIndex;
 
-        this.list.forEach((el, i) => {
+          // 開始抽
           do {
-            let randomBinary = Math.floor(Math.random() * 2);
-            el.team = teamArr[randomBinary];
-            if (
-              el.sex === "1" &&
-              teamArr[randomBinary] === "A" &&
-              A_RemainBoy > 0
-            ) {
-              // 男生分到A隊
-              A_RemainBoy--;
-              break;
-            } else if (
-              el.sex === "1" &&
-              teamArr[randomBinary] === "B" &&
-              B_RemainBoy > 0
-            ) {
-              // 男生分到B隊
-              B_RemainBoy--;
-              break;
-            } else if (
-              el.sex === "0" &&
-              teamArr[randomBinary] === "A" &&
-              A_RemainGirl > 0
-            ) {
-              // 女生分到A隊
-              A_RemainGirl--;
-              break;
-            } else if (
-              el.sex === "0" &&
-              teamArr[randomBinary] === "B" &&
-              B_RemainGirl > 0
-            ) {
-              // 女生分到B隊
-              B_RemainGirl--;
-              break;
+            randomIndex = Math.floor(Math.random() * boysArray.length);
+
+            // noRepeat包含這次抽的亂數，就重抽
+            if (!noRepeat.includes(randomIndex)) {
+              // 不重複，抽到的放入noRepeat陣列
+              noRepeat.push(randomIndex);
+
+              // 此不重複的人，存到真正陣列中
+              this.list.forEach((el) => {
+                if (el.id === boysArray[randomIndex].id) {
+                  el.team = this.teamArr[doWhileCnt % this.teamCnt];
+                }
+              });
+
+              // 跑幾次，取餘數可得隊伍
+              doWhileCnt += 1;
             }
-          } while (true);
-          // 都沒分進去，要再抽一次
-        });
+          } while (noRepeat.length < boysArray.length);
+        }
 
-        // 改成團隊排行
-        this.isRank = false;
+        // 女生分派
+        for (let i = 0; i < girlsArray.length; i++) {
+          // 抽某位的亂數不重複
+          const noRepeat = [];
+          // 抽亂數
+          let randomIndex;
 
-        console.log(this.list);
+          // 開始抽
+          do {
+            randomIndex = Math.floor(Math.random() * girlsArray.length);
+            // noRepeat包含這次抽的亂數，就重抽
+            if (!noRepeat.includes(randomIndex)) {
+              // 不重複，抽到的放入noRepeat陣列
+              noRepeat.push(randomIndex);
+
+              // 此不重複的人，存到真正陣列中
+              this.list.forEach((el) => {
+                if (el.id === girlsArray[randomIndex].id) {
+                  el.team = this.teamArr[doWhileCnt % this.teamCnt];
+                }
+              });
+
+              // 跑幾次，取餘數可得隊伍
+              doWhileCnt += 1;
+            }
+          } while (noRepeat.length < girlsArray.length);
+        }
       }
     },
     // 依照團隊分組
     teamRank() {
       this.list.sort((a, b) => {
+        console.log(a);
+        console.log(a.team);
         // 先按照 team 升序排序
         const teamComparison = a.team.localeCompare(b.team);
 
@@ -239,10 +268,16 @@ export default {
   mounted() {
     //一開始先讀取 localStorage
     let preloadData = JSON.parse(localStorage.getItem("listData"));
+    let preloadDataTeams = JSON.parse(localStorage.getItem("listDataTeams"));
     // 如果有資料
     if (preloadData) {
       this.list = JSON.parse(localStorage.getItem("listData"));
     }
+    if (preloadDataTeams) {
+      this.teamCnt = JSON.parse(localStorage.getItem("listDataTeams"));
+    }
+
+    this.generateTeams();
   },
 };
 </script>
@@ -297,18 +332,35 @@ export default {
         <div class="h2-title">
           <h2 class="text-center">排行榜</h2>
         </div>
+        <div class="text-white">共分{{ teamCnt }}隊</div>
+        <input type="text" v-model="teamCntTmp" v-if="editTeamDisplay" />
+        <button
+          type="button"
+          class="btn btn-primary"
+          @click="editTeamCnt"
+          v-if="!editTeamDisplay"
+        >
+          修改隊伍數
+        </button>
+        <button
+          type="button"
+          @click="confirmTeamCnt"
+          class="btn btn-primary"
+          v-if="editTeamDisplay"
+        >
+          確定隊伍數
+        </button>
         <div class="container list-outer flex-wrap d-flex flex-column">
           <Transition-group name="fade">
             <div v-for="(item, i) in list" :key="item.id" class="list-li ps-5">
               <div class="list-content d-flex align-items-center">
                 <div class="rank-num" v-if="isRank">{{ i + 1 }}</div>
-                <div class="rank-num" v-if="!isRank && item.team === 'A'">
-                  <img src="@/assets/img/santa.png" style="width: 40px" />
-                </div>
-                <div class="rank-num" v-if="!isRank && item.team === 'B'">
-                  <img src="@/assets/img/elk.png" style="width: 40px" />
+                <div class="rank-num" v-if="!isRank">
+                  <!-- <img src="@/assets/img/santa.png" style="width: 40px" /> -->
+                  {{ item.team }}
                 </div>
                 <div class="rank-text d-flex flex-grow-1 px-4">
+                  {{ item.sex === "0" ? "女" : "男" }}
                   <div class="flex-grow-1">{{ item.text }}</div>
                   <div>{{ item.score }}</div>
                 </div>
