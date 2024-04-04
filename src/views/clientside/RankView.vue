@@ -41,8 +41,6 @@ export default {
       // 顯示依照團隊 or 分數排行
       isRank: false,
 
-      // 團隊 加減
-      whatTeamAction: "",
       // 是否顯示加分按鈕
       plusBtnDisplay: false,
       // 是否顯示 團隊 加分按鈕
@@ -450,6 +448,7 @@ export default {
         </div>
         <div class="container list-outer flex-wrap d-flex flex-column">
           <transition-group name="fade">
+            <!-- 每個人物渲染 -->
             <div v-for="(item, i) in list" :key="item.id" class="list-li ps-5">
               <div class="list-content d-flex align-items-center">
                 <div class="rank-num" v-if="isRank">{{ i + 1 }}</div>
@@ -583,37 +582,8 @@ export default {
             >
               <font-awesome-icon icon="fa-regular fa-trash-can" />
             </button>
-
-            <!-- 團隊 減分 -->
-            <button
-              type="button"
-              class="btn btn-primary mx-2"
-              @click="minusNumTeam(), saveRank()"
-            >
-              團隊 <font-awesome-icon icon="fa-solid fa-minus" />
-            </button>
           </div>
         </transition-group>
-
-        <!-- 團隊 加分 -->
-        <div class="d-inline-block">
-          <div class="d-flex justify-content-center ms-3">
-            <input
-              type="text"
-              v-model="whatTeamAction"
-              class="form-control"
-              style="white-space: nowrap; width: 60px"
-              placeholder="A / B"
-            />
-            <button
-              type="button"
-              class="btn btn-primary mx-2"
-              @click="plusNumTeam(), saveRank()"
-            >
-              團隊 <font-awesome-icon icon="fa-solid fa-plus" />
-            </button>
-          </div>
-        </div>
 
         <button
           type="button"
@@ -688,7 +658,7 @@ body {
 .list-outer {
   padding-left: 0px;
   border-radius: 8px;
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 280px);
   border: 2px solid white;
   padding: 50px 20px 20px 20px;
   margin: 0 auto;
@@ -698,7 +668,7 @@ body {
   position: relative;
   color: #fff;
   padding: 4px 8px;
-  margin: 20px 16px;
+  margin: 8px;
   list-style: none;
   border-radius: 8px;
   z-index: 1;
