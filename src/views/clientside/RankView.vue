@@ -172,11 +172,12 @@ export default {
     // 排序
     sortRank() {
       this.isRank = true;
-      this.updateData({ isRank: true }, "/rank/");
 
       this.list.sort((a, b) => {
         return b.score - a.score;
       });
+      this.saveRank();
+      this.updateData({ isRank: true }, "/rank/");
     },
     // 動態數量隊伍命名
     generateTeams() {
@@ -263,6 +264,11 @@ export default {
             }
           } while (noRepeat.length < girlsArray.length);
         }
+
+        // 依照團隊分組
+        this.teamRank();
+        // 存檔
+        this.saveRank();
 
         // 按照隊伍
         this.isRank = false;
@@ -588,7 +594,7 @@ export default {
         <button
           type="button"
           class="btn btn-primary ms-auto"
-          @click="reallocate(), teamRank(), saveRank()"
+          @click="reallocate()"
         >
           重新分隊
         </button>
@@ -597,7 +603,7 @@ export default {
         <button
           type="button"
           class="btn btn-primary ms-3 sort-check"
-          @click="sortRank(), saveRank()"
+          @click="sortRank()"
         >
           <font-awesome-icon icon="fa-solid fa-flag-checkered" />
         </button>
