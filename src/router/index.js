@@ -5,8 +5,10 @@ import RankView from "../views/clientside/RankView.vue";
 import CharadesView from "../views/clientside/CharadesView.vue";
 import CountdownView from "../views/clientside/CountdownView.vue";
 import WordchainView from "../views/clientside/WordchainView.vue";
+import RemoteList from "../views/remoteControl/RemoteList.vue";
 import RemoteControl from "../views/remoteControl/RemoteControl.vue";
 import PptControl from "../views/remoteControl/controlPages/PptControl.vue";
+import RankControl from "@/views/remoteControl/controlPages/RankControl.vue";
 import JumpView from "../views/clientside/JumpView.vue";
 import SelftalkView from "../views/clientside/SelftalkView.vue";
 
@@ -54,6 +56,11 @@ const router = createRouter({
       component: SelftalkView,
     },
     {
+      path: "/remotelist",
+      name: "remotelist",
+      component: RemoteList,
+    },
+    {
       path: "/remote",
       name: "remote",
       component: RemoteControl,
@@ -62,6 +69,11 @@ const router = createRouter({
           path: "ppt",
           name: "pptControl",
           component: PptControl,
+        },
+        {
+          path: "rank",
+          name: "rankControl",
+          component: RankControl,
         },
       ],
     },

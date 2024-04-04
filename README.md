@@ -45,5 +45,8 @@ clientside
     - ppt
         - page // 頁數
     - rank
+        - teamCnt // 分隊隊伍
+        - rankData // 名次列表
+        - isRank // // 顯示依照團隊 or 分數排行
     - wordchain
 ```

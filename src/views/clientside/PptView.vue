@@ -189,7 +189,7 @@ export default {
         console.log(snapshot.val());
 
         vm.displayAllFirbase = snapshot.val();
-        vm.currentIndex = snapshot.val().clientside.ppt.page;
+        vm.currentIndex = snapshot.val().ppt.page;
       });
     },
   },

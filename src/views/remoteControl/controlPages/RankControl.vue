@@ -129,46 +129,33 @@ export default {
     plusNum(item) {
       this.list.forEach((el, i) => {
         if (item.id == el.id) {
-          this.list[i].score += 1;
+          this.list[i].score += 9;
         }
       });
     },
     // 團隊加分
     plusNumTeam() {
-      this.teamArr.forEach((item, index) => {
-        this.list.forEach((el, i) => {
-          if (el.team === item) {
-            this.list[i].score += Number(
-              this.$refs[`refTeamPlus${index}`][0].value
-            );
-          }
-        });
+      this.list.forEach((el, i) => {
+        if (el.team === this.whatTeamAction) {
+          this.list[i].score += 9;
+        }
       });
+      // this.whatTeamAction = "";
     },
     // 減分
     minusNum(item) {
       this.list.forEach((el, i) => {
         if (item.id == el.id) {
-          this.list[i].score -= 1;
+          this.list[i].score -= 9;
         }
       });
     },
     // 團隊減分
     minusNumTeam() {
-      this.teamArr.forEach((item, index) => {
-        this.list.forEach((el, i) => {
-          if (el.team === item) {
-            this.list[i].score -= Number(
-              this.$refs[`refTeamPlus${index}`][0].value
-            );
-          }
-        });
-      });
-    },
-    // 團隊加減分輸入框重設
-    resetNumTeam() {
-      this.teamArr.forEach((item, index) => {
-        this.$refs[`refTeamPlus${index}`][0].value = 0;
+      this.list.forEach((el, i) => {
+        if (el.team === this.whatTeamAction) {
+          this.list[i].score -= 9;
+        }
       });
     },
     // 排序
@@ -306,9 +293,6 @@ export default {
         vm.teamCnt = snapshot.val().rank.teamCnt;
         vm.list = snapshot.val().rank.rankData;
         vm.isRank = snapshot.val().rank.isRank;
-
-        // 動態數量隊伍命名
-        this.generateTeams();
       });
     },
   },
@@ -404,49 +388,9 @@ export default {
           確定隊伍數
         </button>
 
-        <div
-          class="text-white d-flex justify-content-center align-items-center"
-        >
+        <div class="text-white">
           <!-- {{ displayAllFirbase }}<br /><br />
           {{ teamArr }} -->
-          <div>團隊加分：</div>
-          <div class="d-flex flex-row align-items-center">
-            <div
-              class="d-flex flex-column mx-1"
-              v-for="(teamName, i) in teamArr"
-              :key="i"
-            >
-              <div class="text-center">{{ teamName }}隊伍</div>
-              <div>
-                <input
-                  value="0"
-                  type="number"
-                  class="form-control"
-                  style="width: 80px"
-                  :ref="'refTeamPlus' + i"
-                />
-              </div>
-            </div>
-          </div>
-          <div>
-            <button
-              type="button"
-              class="btn btn-primary me-2"
-              @click="plusNumTeam(), saveRank()"
-            >
-              團隊加分
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary me-2"
-              @click="minusNumTeam(), saveRank()"
-            >
-              團隊減分
-            </button>
-            <button type="button" class="btn btn-primary" @click="resetNumTeam">
-              重設
-            </button>
-          </div>
         </div>
         <div class="container list-outer flex-wrap d-flex flex-column">
           <transition-group name="fade">

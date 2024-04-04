@@ -14,6 +14,12 @@ export default {
     <div class="list position-absolute top-50 start-50 translate-middle">
       <div class="container">
         <ul class="list-group">
+          <RouterLink to="/remotelist" class="list-a mb-4">
+            <li class="list-group-item fs-4 w-50 mx-auto">
+              <font-awesome-icon icon="fa-solid fa-wifi" class="me-1" />
+              遙控器
+            </li>
+          </RouterLink>
           <RouterLink to="/ppt" class="list-a mb-4">
             <li class="list-group-item fs-4">
               <font-awesome-icon icon="fa-solid fa-gamepad" /> 活動流程

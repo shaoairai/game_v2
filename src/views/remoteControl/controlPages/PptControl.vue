@@ -19,21 +19,21 @@ export default {
       onValue(ref(db), (snapshot) => {
         console.log(snapshot.val());
 
-        vm.page = snapshot.val().clientside.ppt.page;
+        vm.page = snapshot.val().ppt.page;
       });
     },
     // 上頁
     pre() {
       const vm = this;
       if (vm.page > 0) {
-        vm.updateData({ page: vm.page - 1 }, "/clientside/ppt");
+        vm.updateData({ page: vm.page - 1 }, "/ppt");
       }
     },
     // 下頁
     next() {
       const vm = this;
       if (vm.page < vm.lastPage) {
-        vm.updateData({ page: vm.page + 1 }, "/clientside/ppt");
+        vm.updateData({ page: vm.page + 1 }, "/ppt");
       }
     },
   },
@@ -46,12 +46,6 @@ export default {
 
 <template>
   <div>
-    <h2
-      class="d-flex justify-content-center align-items-center bg-primary text-white text-center m-0"
-      style="height: 72px"
-    >
-      <font-awesome-icon icon="fa-solid fa-wifi" /> 活動流程
-    </h2>
     <div
       class="d-flex flex-column flex-md-row w-100"
       style="height: calc(100vh - 72px)"

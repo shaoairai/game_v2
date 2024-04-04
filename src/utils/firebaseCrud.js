@@ -1,6 +1,14 @@
 // firebase
 import { db } from "@/utils/firebase.js";
-import { ref, set, get, update, remove, push } from "firebase/database";
+import {
+  onValue,
+  ref,
+  set,
+  get,
+  update,
+  remove,
+  push,
+} from "firebase/database";
 
 export default {
   methods: {
