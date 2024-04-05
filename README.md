@@ -42,6 +42,8 @@ npm run lint
 - router
     - controlRouter // 控制路由
 - charades
+    - playMusic // 音樂播放
+    - groupList // 各隊該單元分數
 - countdown
 - ppt
     - page // 頁數

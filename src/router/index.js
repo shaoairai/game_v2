@@ -9,6 +9,7 @@ import RemoteList from "../views/remoteControl/RemoteList.vue";
 import RemoteControl from "../views/remoteControl/RemoteControl.vue";
 import PptControl from "../views/remoteControl/controlPages/PptControl.vue";
 import RankControl from "@/views/remoteControl/controlPages/RankControl.vue";
+import CharadesControl from "@/views/remoteControl/controlPages/CharadesControl.vue";
 import JumpView from "../views/clientside/JumpView.vue";
 import SelftalkView from "../views/clientside/SelftalkView.vue";
 
@@ -74,6 +75,11 @@ const router = createRouter({
           path: "rank",
           name: "rankControl",
           component: RankControl,
+        },
+        {
+          path: "charades",
+          name: "charadesControl",
+          component: CharadesControl,
         },
       ],
     },

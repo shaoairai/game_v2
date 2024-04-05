@@ -44,6 +44,14 @@ export default {
             >排行榜</RouterLink
           >
         </div>
+        <div class="p-2">
+          <RouterLink
+            to="rank"
+            class="text-white"
+            @click="remoteSwitchPage('charades')"
+            >比手畫腳</RouterLink
+          >
+        </div>
       </div>
     </div>
 

@@ -210,6 +210,7 @@ export default {
                             :src="hand"
                             controls
                             loop
+                            muted
                             ref="audioRef"
                           ></audio>
                         </div>
