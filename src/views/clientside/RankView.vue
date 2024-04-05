@@ -353,44 +353,110 @@ export default {
     <div class="p-3 rank-bg">
       <div class="joinPerson" v-if="joinBtnDisplay">
         <div class="pop-bg"></div>
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            v-model="text"
-            class="form-control"
-            placeholder="請輸入暱稱"
-            aria-label="請輸入暱稱"
-          />
-          <input
-            type="text"
-            v-model="sex"
-            class="form-control"
-            placeholder="女生0、男生1"
-            aria-label="女生0、男生1"
-          />
-          <input
-            type="text"
-            v-model="team"
-            class="form-control"
-            placeholder="A / B"
-            aria-label="A / B"
-          />
-          <button
-            class="btn btn-outline-secondary check-join-btn"
-            type="button"
-            id="button-addon-cancel"
-            @click="joinBtnDisplay = !joinBtnDisplay"
-          >
-            取消
-          </button>
-          <button
-            class="btn btn-outline-secondary check-join-btn"
-            type="button"
-            id="button-addon2"
-            @click="addData(), saveRank()"
-          >
-            新增一人
-          </button>
+        <div
+          class="d-flex flex-column mb-3 p-5 rounded-3"
+          style="
+            z-index: 10;
+            width: 80%;
+            max-width: 500px;
+            max-height: 100vh;
+            overflow: auto;
+            background: #f9f9f9;
+          "
+        >
+          <div class="mb-3">
+            暱稱：<br />
+            <input
+              type="text"
+              v-model="text"
+              class="form-control"
+              placeholder="請輸入暱稱"
+              aria-label="請輸入暱稱"
+            />
+          </div>
+          <div class="mb-3">
+            性別：<br />
+            <input
+              type="radio"
+              name="sex"
+              id="boy"
+              v-model="sex"
+              value="1"
+              class="d-none"
+            />
+            <label
+              for="boy"
+              class="btn me-1 mt-1"
+              :class="[sex === '1' ? 'btn-primary' : 'btn-outline-primary']"
+              style="width: 100px"
+              >男生</label
+            >
+            <input
+              type="radio"
+              name="sex"
+              id="girl"
+              v-model="sex"
+              value="0"
+              class="d-none"
+            />
+            <label
+              for="girl"
+              class="btn me-1 mt-1"
+              :class="[sex === '0' ? 'btn-primary' : 'btn-outline-primary']"
+              style="width: 100px"
+              >女生</label
+            >
+          </div>
+          <div>
+            組別：<br />
+            <div class="d-flex flex-wrap">
+              <div
+                v-for="(teamName, i) in teamArr"
+                :key="i"
+                class="me-1 mt-1"
+                style="width: 100px"
+              >
+                <input
+                  :id="teamName"
+                  type="radio"
+                  name="teamRadio"
+                  v-model="team"
+                  :value="teamName"
+                  class="d-none"
+                />
+                <label
+                  :for="teamName"
+                  class="btn w-100"
+                  :class="[
+                    teamName == team ? 'btn-primary' : 'btn-outline-primary',
+                  ]"
+                  >{{ teamName }}</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="d-flex pt-3">
+            <div class="w-100 pe-1">
+              <button
+                class="btn btn-outline-secondary check-join-btn w-100"
+                type="button"
+                id="button-addon-cancel"
+                @click="joinBtnDisplay = !joinBtnDisplay"
+              >
+                取消
+              </button>
+            </div>
+            <div class="w-100 ps-1">
+              <button
+                class="btn btn-primary w-100"
+                type="button"
+                id="button-addon2"
+                @click="addData(), saveRank()"
+              >
+                新增
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -419,6 +485,14 @@ export default {
         <!-- :style="{ height:list.length <= 9 ? 62 * (list.length / 2 + 1) + 20 + 'px': 'auto',}" -->
         <div
           class="container list-outer flex-wrap d-flex flex-column"
+          :style="{
+            height:
+              list.length <= 9
+                ? 60 * (list.length / 2 + 1) + 20 + 'px'
+                : 'auto',
+            height:
+              list.length > 9 ? 60 * (list.length / 3 + 1) + 20 + 'px' : 'auto',
+          }"
           v-if="!isDisplayGroup"
         >
           <transition-group name="fade">
@@ -556,7 +630,7 @@ export default {
       >
         <div>
           <div class="text-white d-flex align-items-center">
-            <div class="pe-2">共分{{ teamCnt }}隊</div>
+            <div class="pe-2">共{{ list.length }}人，分{{ teamCnt }}隊</div>
             <div
               class="cursor-pointer"
               @click="editTeamCnt"
@@ -879,7 +953,7 @@ body {
 .edit-area-outer {
   width: 100%;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   padding: 32px;
@@ -895,7 +969,7 @@ body {
 .pop-bg {
   width: 100%;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: black;
@@ -906,14 +980,14 @@ body {
   z-index: 100;
 }
 
-.check-join-btn {
-  background: #545454;
-  color: white;
-}
-.check-join-btn:hover {
-  background: #fbbc05;
-  color: #222222;
-}
+// .check-join-btn {
+//   background: #545454;
+//   color: white;
+// }
+// .check-join-btn:hover {
+//   background: #fbbc05;
+//   color: #222222;
+// }
 
 /* 確定並排序 */
 .sort-check {
