@@ -546,7 +546,7 @@ export default {
 
       <!-- 隊伍數量、團隊加減分 -->
       <div
-        class="container d-flex flex-wrap justify-content-between align-items-center py-3"
+        class="container d-flex flex-wrap justify-content-between align-items-center px-0 py-3"
       >
         <div>
           <div class="text-white d-flex align-items-center">
@@ -606,14 +606,14 @@ export default {
             <button
               type="button"
               class="btn btn-primary me-2"
-              @click="plusNumTeam(), saveRank()"
+              @click="plusNumTeam(), saveRank(), resetNumTeam()"
             >
               團<font-awesome-icon icon="fa-solid fa-plus" />
             </button>
             <button
               type="button"
               class="btn btn-primary me-2"
-              @click="minusNumTeam(), saveRank()"
+              @click="minusNumTeam(), saveRank(), resetNumTeam()"
             >
               團<font-awesome-icon icon="fa-solid fa-minus" />
             </button>
@@ -625,27 +625,31 @@ export default {
       </div>
 
       <!-- 下排按鈕 -->
-      <div class="container all-set-btns d-flex flex-wrap pt-2">
+      <div class="container all-set-btns d-flex flex-wrap px-0 pt-2">
         <!-- 回首頁 -->
         <RouterLink to="/">
-          <button type="button" class="btn btn-primary set-btn me-2">
+          <button type="button" class="btn btn-primary set-btn me-2 my-2">
             <font-awesome-icon icon="fa-solid fa-house" />
           </button>
         </RouterLink>
 
         <!-- 連至各遊戲 -->
         <RouterLink to="/charades">
-          <button type="button" class="btn btn-primary set-btn me-2">比</button>
+          <button type="button" class="btn btn-primary set-btn me-2 my-2">
+            比
+          </button>
         </RouterLink>
 
         <RouterLink to="/jump">
-          <button type="button" class="btn btn-primary set-btn me-2">跳</button>
+          <button type="button" class="btn btn-primary set-btn me-2 my-2">
+            跳
+          </button>
         </RouterLink>
 
         <RouterLink to="/selftalk">
           <button
             type="button"
-            class="btn btn-primary set-btn me-2"
+            class="btn btn-primary set-btn me-2 my-2"
             style="width: 40px"
           >
             自
@@ -655,7 +659,7 @@ export default {
         <!-- 設定按鈕 -->
         <button
           type="button"
-          class="btn btn-primary set-btn"
+          class="btn btn-primary set-btn my-2"
           @click="setBtn = !setBtn"
         >
           <font-awesome-icon icon="fa-solid fa-gear" />
@@ -666,7 +670,7 @@ export default {
             <!-- 啟用/關閉加分按鈕 -->
             <button
               type="button"
-              class="btn btn-primary ms-2"
+              class="btn btn-primary ms-2 my-2"
               @click="plusBtnDisplay = !plusBtnDisplay"
             >
               <font-awesome-icon icon="fa-solid fa-plus" />
@@ -674,7 +678,7 @@ export default {
             <!-- 啟用/關閉減分按鈕 -->
             <button
               type="button"
-              class="btn btn-primary ms-2"
+              class="btn btn-primary ms-2 my-2"
               @click="minusBtnDisplay = !minusBtnDisplay"
             >
               <font-awesome-icon icon="fa-solid fa-minus" />
@@ -682,7 +686,7 @@ export default {
             <!-- 啟用/關閉編輯按鈕 -->
             <button
               type="button"
-              class="btn btn-primary ms-2"
+              class="btn btn-primary ms-2 my-2"
               @click="editBtnDisplay = !editBtnDisplay"
             >
               <font-awesome-icon icon="fa-regular fa-pen-to-square" />
@@ -690,7 +694,7 @@ export default {
             <!-- 啟用/關閉加人按鈕 -->
             <button
               type="button"
-              class="btn btn-primary ms-2"
+              class="btn btn-primary ms-2 my-2"
               @click="joinBtnDisplay = !joinBtnDisplay"
             >
               <font-awesome-icon icon="fa-solid fa-user-plus" />
@@ -698,7 +702,7 @@ export default {
             <!-- 啟用/關閉移除按鈕 -->
             <button
               type="button"
-              class="btn btn-primary ms-2"
+              class="btn btn-primary ms-2 my-2"
               @click="delBtnDisplay = !delBtnDisplay"
             >
               <font-awesome-icon icon="fa-regular fa-trash-can" />
@@ -708,7 +712,7 @@ export default {
 
         <button
           type="button"
-          class="btn btn-primary ms-auto"
+          class="btn btn-primary ms-auto my-1"
           @click="reallocate()"
         >
           重新分隊
@@ -717,7 +721,7 @@ export default {
         <!-- 排序 -->
         <button
           type="button"
-          class="btn btn-primary ms-3 sort-check"
+          class="btn btn-primary ms-3 sort-check my-1"
           @click="sortRank()"
         >
           <font-awesome-icon icon="fa-solid fa-flag-checkered" />
