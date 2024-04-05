@@ -416,20 +416,26 @@ export default {
         </div>
 
         <!-- 排行榜 -->
+        <!-- :style="{ height:list.length <= 9 ? 62 * (list.length / 2 + 1) + 20 + 'px': 'auto',}" -->
         <div
           class="container list-outer flex-wrap d-flex flex-column"
           v-if="!isDisplayGroup"
         >
           <transition-group name="fade">
             <!-- 每個人物渲染 -->
-            <div v-for="(item, i) in list" :key="item.id" class="list-li ps-5">
+            <div
+              v-for="(item, i) in list"
+              :key="item.id"
+              class="list-li"
+              style="padding-left: 30px"
+            >
               <div class="list-content d-flex align-items-center">
                 <div class="rank-num" v-if="isRank">{{ i + 1 }}</div>
                 <div class="rank-num" v-if="!isRank">
                   <!-- <img src="@/assets/img/santa.png" style="width: 40px" /> -->
                   {{ item.team }}
                 </div>
-                <div class="rank-text d-flex flex-grow-1 px-4">
+                <div class="rank-text d-flex flex-grow-1 px-2">
                   {{ item.sex === "0" ? "女" : "男" }}
                   <div class="flex-grow-1">{{ item.text }}</div>
                   <div>{{ item.score }}</div>
@@ -476,7 +482,7 @@ export default {
         </div>
 
         <!-- 分隊顯示 -->
-        <div class="container d-flex flex-row flex-wrap w-100" v-else>
+        <div class="container d-flex flex-row flex-wrap w-100 px-0" v-else>
           <div
             v-for="(teamName, index) in teamArr"
             :key="index"
@@ -602,7 +608,7 @@ export default {
               </div>
             </div>
           </div>
-          <div class="p-2">
+          <div class="p-md-0 p-2">
             <button
               type="button"
               class="btn btn-primary me-2"
@@ -746,7 +752,7 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap");
 
 body {
@@ -783,17 +789,25 @@ body {
 .list-outer {
   padding-left: 0px;
   border-radius: 8px;
-  /* max-height: calc(100vh - 280px); */
   border: 2px solid white;
   padding: 20px;
   margin: 0 auto;
   /* max-width: 900px; */
 }
+
+/* 因應不同人數調整排版 */
+/* 排雙排 
+// .twoList {
+//   & > .list-li {
+//     width: calc(50% - 16px);
+//   }
+// }*/
+
 .list-li {
   position: relative;
   color: #fff;
-  padding: 4px 8px;
-  margin: 8px;
+  padding: 4px;
+  margin: 6px 0px;
   list-style: none;
   border-radius: 8px;
   z-index: 1;
@@ -804,7 +818,7 @@ body {
   top: 0;
   right: 14px;
   bottom: 0;
-  left: 30px;
+  left: 12px;
   background: #fff;
   box-shadow: 4px 4px 4px black;
   opacity: 0.15;
@@ -818,37 +832,37 @@ body {
 .list-li::after {
   content: "";
   position: absolute;
-  top: -4px;
-  left: 0;
-  width: 50px;
-  height: 50px;
+  top: 2px;
+  left: -4px;
+  width: 34px;
+  height: 34px;
   background: #fbbc05;
   box-shadow: 0px 0px 10px #22222299;
   border-radius: 100px;
 }
 .list-content {
-  height: 38px;
+  height: 32px;
   padding-right: 24px;
   z-index: 10;
 }
 
 .rank-num {
   position: absolute;
-  top: 20px;
-  left: 25px;
+  top: 19px;
+  left: 13px;
   -webkit-transform: translateX(-50%) translateY(-50%);
   -moz-transform: translateX(-50%) translateY(-50%);
   -ms-transform: translateX(-50%) translateY(-50%);
   -o-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 600;
   z-index: 10;
   color: #222222;
 }
 
 .rank-text {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 /* 背景 */
@@ -964,10 +978,21 @@ body {
 .groupDisplay {
   width: 100%;
 }
+
+@media screen and (min-width: 992px) and (min-height: 600px) {
+  /* 列表 */
+  .list-outer {
+    max-height: calc(100vh - 300px);
+  }
+}
+
 @media screen and (min-width: 768px) {
   /* 分隊顯示 */
   .groupDisplay {
     width: 50%;
+  }
+  .rank-text {
+    font-size: 22px;
   }
 }
 </style>
