@@ -482,17 +482,12 @@ export default {
         </div>
 
         <!-- 排行榜 -->
-        <!-- :style="{ height:list.length <= 9 ? 62 * (list.length / 2 + 1) + 20 + 'px': 'auto',}" -->
+        <!-- :style="{
+            width: list.length > 9 ? '100%' : 'auto',
+            height: list.length > 9 ? 410 + 'px' : 'auto',
+          }" -->
         <div
           class="container list-outer flex-wrap d-flex flex-column"
-          :style="{
-            height:
-              list.length <= 9
-                ? 60 * (list.length / 2 + 1) + 20 + 'px'
-                : 'auto',
-            height:
-              list.length > 9 ? 60 * (list.length / 3 + 1) + 20 + 'px' : 'auto',
-          }"
           v-if="!isDisplayGroup"
         >
           <transition-group name="fade">
@@ -575,7 +570,7 @@ export default {
                       <!-- <img src="@/assets/img/santa.png" style="width: 40px" /> -->
                       {{ item.team }}
                     </div>
-                    <div class="rank-text d-flex flex-grow-1 px-4">
+                    <div class="rank-text d-flex flex-grow-1 pe-4">
                       {{ item.sex === "0" ? "女" : "男" }}
                       <div class="flex-grow-1">{{ item.text }}</div>
                       <div>{{ item.score }}</div>
@@ -866,16 +861,8 @@ body {
   border: 2px solid white;
   padding: 20px;
   margin: 0 auto;
-  /* max-width: 900px; */
+  /* max-height: calc(100vh - 300px); */
 }
-
-/* 因應不同人數調整排版 */
-/* 排雙排 
-// .twoList {
-//   & > .list-li {
-//     width: calc(50% - 16px);
-//   }
-// }*/
 
 .list-li {
   position: relative;
@@ -906,10 +893,10 @@ body {
 .list-li::after {
   content: "";
   position: absolute;
-  top: 2px;
-  left: -4px;
-  width: 34px;
-  height: 34px;
+  top: 0px;
+  left: -6px;
+  width: 40px;
+  height: 40px;
   background: #fbbc05;
   box-shadow: 0px 0px 10px #22222299;
   border-radius: 100px;
@@ -922,14 +909,14 @@ body {
 
 .rank-num {
   position: absolute;
-  top: 19px;
-  left: 13px;
+  top: 20px;
+  left: 14px;
   -webkit-transform: translateX(-50%) translateY(-50%);
   -moz-transform: translateX(-50%) translateY(-50%);
   -ms-transform: translateX(-50%) translateY(-50%);
   -o-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   z-index: 10;
   color: #222222;
@@ -979,15 +966,6 @@ body {
 .edit-area {
   z-index: 100;
 }
-
-// .check-join-btn {
-//   background: #545454;
-//   color: white;
-// }
-// .check-join-btn:hover {
-//   background: #fbbc05;
-//   color: #222222;
-// }
 
 /* 確定並排序 */
 .sort-check {
@@ -1053,7 +1031,7 @@ body {
   width: 100%;
 }
 
-@media screen and (min-width: 992px) and (min-height: 600px) {
+@media screen and (min-width: 992px) and (min-height: 667px) {
   /* 列表 */
   .list-outer {
     max-height: calc(100vh - 300px);
