@@ -38,7 +38,10 @@ export default {
       editBtnDisplay: false,
       // 是否顯示垃圾桶按鈕
       delBtnDisplay: false,
-      // 顯示依照團隊 or 分數排行
+
+      // 顯示上依照團隊區分 or 排行榜
+      isDisplayGroup: false,
+      // 依照團隊 or 分數排行
       isRank: false,
 
       // 是否顯示加分按鈕
@@ -452,7 +455,20 @@ export default {
             </button>
           </div>
         </div>
-        <div class="container list-outer flex-wrap d-flex flex-column">
+        <div>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="isDisplayGroup = !isDisplayGroup"
+          >
+            {{ isDisplayGroup ? "顯示切換成排行榜" : "顯示切換成隊伍" }}
+          </button>
+        </div>
+        <!-- 排行榜 -->
+        <div
+          class="container list-outer flex-wrap d-flex flex-column"
+          v-if="!isDisplayGroup"
+        >
           <transition-group name="fade">
             <!-- 每個人物渲染 -->
             <div v-for="(item, i) in list" :key="item.id" class="list-li ps-5">
@@ -506,6 +522,74 @@ export default {
               </div>
             </div>
           </transition-group>
+        </div>
+
+        <!-- 分隊 -->
+        <div class="container d-flex flex-row flex-wrap w-100" v-else>
+          <div
+            v-for="(teamName, index) in teamArr"
+            :key="index"
+            class="w-50 p-2"
+          >
+            <div
+              class="text-white h-100 list-outer"
+              style="border: 2px solid white"
+            >
+              <!-- 每個人物渲染 -->
+              <div v-for="(item, i) in list" :key="item.id">
+                <div v-if="item.team === teamName" class="list-li ps-5">
+                  <div class="list-content d-flex align-items-center">
+                    <div class="rank-num" v-if="isRank">{{ i + 1 }}</div>
+                    <div class="rank-num" v-if="!isRank">
+                      <!-- <img src="@/assets/img/santa.png" style="width: 40px" /> -->
+                      {{ item.team }}
+                    </div>
+                    <div class="rank-text d-flex flex-grow-1 px-4">
+                      {{ item.sex === "0" ? "女" : "男" }}
+                      <div class="flex-grow-1">{{ item.text }}</div>
+                      <div>{{ item.score }}</div>
+                    </div>
+                    <!-- 加分 -->
+                    <button
+                      type="button"
+                      class="btn btn-primary me-2"
+                      @click="plusNum(item), saveRank()"
+                      v-if="plusBtnDisplay"
+                    >
+                      <font-awesome-icon icon="fa-solid fa-plus" />
+                    </button>
+                    <!-- 減分 -->
+                    <button
+                      type="button"
+                      class="btn btn-primary me-2"
+                      @click="minusNum(item), saveRank()"
+                      v-if="minusBtnDisplay"
+                    >
+                      <font-awesome-icon icon="fa-solid fa-minus" />
+                    </button>
+                    <!-- 編輯名稱 -->
+                    <button
+                      type="button"
+                      class="btn btn-primary me-2"
+                      @click="editData(item)"
+                      v-if="editBtnDisplay"
+                    >
+                      <font-awesome-icon icon="fa-regular fa-pen-to-square" />
+                    </button>
+                    <!-- 刪除 -->
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      @click="removeData(item), saveRank()"
+                      v-if="delBtnDisplay"
+                    >
+                      <font-awesome-icon icon="fa-regular fa-trash-can" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
