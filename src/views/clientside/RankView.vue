@@ -302,8 +302,13 @@ export default {
       this.updateData({ rankData: this.list }, "/rank/");
       // localStorage.setItem("listData", JSON.stringify(this.list));
     },
+    // 顯示上依照團隊區分 or 排行榜
+    switchIsDisplayGroup() {
+      this.isDisplayGroup = !this.isDisplayGroup;
+      this.updateData({ isDisplayGroup: this.isDisplayGroup }, "/rank/");
+    },
     // 即時監聽讀取
-    async onReadData() {
+    onReadData() {
       const vm = this;
       onValue(ref(db), (snapshot) => {
         console.log(snapshot.val());
@@ -313,6 +318,7 @@ export default {
         vm.teamCnt = snapshot.val().rank.teamCnt;
         vm.list = snapshot.val().rank.rankData;
         vm.isRank = snapshot.val().rank.isRank;
+        vm.isDisplayGroup = snapshot.val().rank.isDisplayGroup;
 
         // 動態數量隊伍命名
         this.generateTeams();
@@ -392,78 +398,23 @@ export default {
         <div class="h2-title">
           <h2 class="text-center">排行榜</h2>
         </div>
-        <div class="text-white">共分{{ teamCnt }}隊</div>
-        <input type="text" v-model="teamCntTmp" v-if="editTeamDisplay" />
-        <button
-          type="button"
-          class="btn btn-primary"
-          @click="editTeamCnt"
-          v-if="!editTeamDisplay"
-        >
-          修改隊伍數
-        </button>
-        <button
-          type="button"
-          @click="confirmTeamCnt"
-          class="btn btn-primary"
-          v-if="editTeamDisplay"
-        >
-          確定隊伍數
-        </button>
 
-        <div
-          class="text-white d-flex justify-content-center align-items-center"
-        >
-          <!-- {{ displayAllFirbase }}<br /><br />
-          {{ teamArr }} -->
-          <div>團隊加分：</div>
-          <div class="d-flex flex-row align-items-center">
-            <div
-              class="d-flex flex-column mx-1"
-              v-for="(teamName, i) in teamArr"
-              :key="i"
-            >
-              <div class="text-center">{{ teamName }}隊伍</div>
-              <div>
-                <input
-                  value="0"
-                  type="number"
-                  class="form-control"
-                  style="width: 80px"
-                  :ref="'refTeamPlus' + i"
-                />
-              </div>
-            </div>
-          </div>
-          <div>
-            <button
-              type="button"
-              class="btn btn-primary me-2"
-              @click="plusNumTeam(), saveRank()"
-            >
-              團隊加分
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary me-2"
-              @click="minusNumTeam(), saveRank()"
-            >
-              團隊減分
-            </button>
-            <button type="button" class="btn btn-primary" @click="resetNumTeam">
-              重設
-            </button>
-          </div>
-        </div>
-        <div>
+        <!-- 切換顯示方式 -->
+        <div class="container px-0 py-2 text-end">
           <button
             type="button"
             class="btn btn-primary"
-            @click="isDisplayGroup = !isDisplayGroup"
+            @click="switchIsDisplayGroup"
           >
-            {{ isDisplayGroup ? "顯示切換成排行榜" : "顯示切換成隊伍" }}
+            <div v-show="isDisplayGroup">
+              <font-awesome-icon icon="fa-solid fa-list-ul" />
+            </div>
+            <div v-show="!isDisplayGroup">
+              <font-awesome-icon icon="fa-regular fa-rectangle-list" />
+            </div>
           </button>
         </div>
+
         <!-- 排行榜 -->
         <div
           class="container list-outer flex-wrap d-flex flex-column"
@@ -524,12 +475,12 @@ export default {
           </transition-group>
         </div>
 
-        <!-- 分隊 -->
+        <!-- 分隊顯示 -->
         <div class="container d-flex flex-row flex-wrap w-100" v-else>
           <div
             v-for="(teamName, index) in teamArr"
             :key="index"
-            class="w-50 p-2"
+            class="groupDisplay p-2"
           >
             <div
               class="text-white h-100 list-outer"
@@ -593,6 +544,86 @@ export default {
         </div>
       </div>
 
+      <!-- 隊伍數量、團隊加減分 -->
+      <div
+        class="container d-flex flex-wrap justify-content-between align-items-center py-3"
+      >
+        <div>
+          <div class="text-white d-flex align-items-center">
+            <div class="pe-2">共分{{ teamCnt }}隊</div>
+            <div
+              class="cursor-pointer"
+              @click="editTeamCnt"
+              v-if="!editTeamDisplay"
+            >
+              <font-awesome-icon icon="fa-solid fa-gear" />
+            </div>
+            <div class="d-flex">
+              <input
+                type="number"
+                class="form-control"
+                style="width: 80px"
+                v-model="teamCntTmp"
+                v-if="editTeamDisplay"
+              />
+              <button
+                type="button"
+                @click="confirmTeamCnt"
+                class="btn btn-primary ms-2"
+                v-if="editTeamDisplay"
+              >
+                確定隊伍數
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="text-white d-flex flex-wrap justify-content-center align-items-center"
+        >
+          <!-- {{ displayAllFirbase }}<br /><br />
+          {{ teamArr }} -->
+          <div>團隊計分：</div>
+          <div class="d-flex flex-wrap flex-row align-items-center">
+            <div
+              class="d-flex flex-column mx-1"
+              v-for="(teamName, i) in teamArr"
+              :key="i"
+            >
+              <div class="text-center">{{ teamName }}隊伍</div>
+              <div>
+                <input
+                  value="0"
+                  type="number"
+                  class="form-control"
+                  style="width: 80px"
+                  :ref="'refTeamPlus' + i"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="p-2">
+            <button
+              type="button"
+              class="btn btn-primary me-2"
+              @click="plusNumTeam(), saveRank()"
+            >
+              團<font-awesome-icon icon="fa-solid fa-plus" />
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary me-2"
+              @click="minusNumTeam(), saveRank()"
+            >
+              團<font-awesome-icon icon="fa-solid fa-minus" />
+            </button>
+            <button type="button" class="btn btn-primary" @click="resetNumTeam">
+              <font-awesome-icon icon="fa-solid fa-arrow-rotate-left" />
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- 下排按鈕 -->
       <div class="container all-set-btns d-flex flex-wrap pt-2">
         <!-- 回首頁 -->
@@ -607,17 +638,17 @@ export default {
           <button type="button" class="btn btn-primary set-btn me-2">比</button>
         </RouterLink>
 
-        <RouterLink to="/countDown">
-          <button type="button" class="btn btn-primary set-btn me-2">急</button>
+        <RouterLink to="/jump">
+          <button type="button" class="btn btn-primary set-btn me-2">跳</button>
         </RouterLink>
 
-        <RouterLink to="/wordChain">
+        <RouterLink to="/selftalk">
           <button
             type="button"
             class="btn btn-primary set-btn me-2"
             style="width: 40px"
           >
-            T
+            自
           </button>
         </RouterLink>
 
@@ -748,9 +779,9 @@ body {
 .list-outer {
   padding-left: 0px;
   border-radius: 8px;
-  max-height: calc(100vh - 280px);
+  /* max-height: calc(100vh - 280px); */
   border: 2px solid white;
-  padding: 50px 20px 20px 20px;
+  padding: 20px;
   margin: 0 auto;
   /* max-width: 900px; */
 }
@@ -818,7 +849,7 @@ body {
 
 /* 背景 */
 .rank-bg {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   background-image: url("@/assets/img/rank_bg.jpg");
   background-size: cover;
@@ -923,5 +954,16 @@ body {
 }
 .set-btn-move {
   transition: all 1s;
+}
+
+/* 分隊顯示 */
+.groupDisplay {
+  width: 100%;
+}
+@media screen and (min-width: 768px) {
+  /* 分隊顯示 */
+  .groupDisplay {
+    width: 50%;
+  }
 }
 </style>

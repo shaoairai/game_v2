@@ -44,10 +44,16 @@ import {
   faWifi,
   faPeopleArrows,
   faComments,
+  faListUl,
+  faArrowRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 // 所有要嵌入的 icon 都要加在這裡
 
-import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons"; // 所有要嵌入的 icon 都要加在這裡
+import {
+  faPenToSquare,
+  faTrashCan,
+  faRectangleList,
+} from "@fortawesome/free-regular-svg-icons"; // 所有要嵌入的 icon 都要加在這裡
 
 /* add icons to the library */
 library.add(
@@ -81,7 +87,10 @@ library.add(
   faSkullCrossbones,
   faWifi,
   faPeopleArrows,
-  faComments
+  faComments,
+  faListUl,
+  faRectangleList,
+  faArrowRotateLeft
 ); // 所有要嵌入的 icon 都要加在這裡
 
 const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);

@@ -47,6 +47,7 @@ clientside
     - rank
         - teamCnt // 分隊隊伍
         - rankData // 名次列表
-        - isRank // // 顯示依照團隊 or 分數排行
+        - isDisplayGroup // 顯示上依照團隊區分 or 排行榜
+        - isRank // 依照團隊 or 分數排行
     - wordchain
 ```
