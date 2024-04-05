@@ -74,6 +74,8 @@ export default {
       fpage: 0,
       // 顯示所有firebase資料
       displayAllFirbase: "",
+      // 遠端控制路由
+      controlRouter: "",
     };
   },
   methods: {
@@ -190,6 +192,14 @@ export default {
 
         vm.displayAllFirbase = snapshot.val();
         vm.currentIndex = snapshot.val().ppt.page;
+
+        // 路由判斷
+        vm.controlRouter = snapshot.val().router.controlRouter;
+        const fullPath = vm.$route.fullPath;
+        const pathSegments = fullPath.split("/");
+        if (vm.controlRouter != pathSegments[1]) {
+          vm.$router.push(vm.controlRouter);
+        }
       });
     },
   },

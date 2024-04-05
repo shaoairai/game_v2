@@ -39,15 +39,16 @@ npm run lint
 ### Firebase 結構規劃
 
 ```Firebase
-clientside
-    - charades
-    - countdown
-    - ppt
-        - page // 頁數
-    - rank
-        - teamCnt // 分隊隊伍
-        - rankData // 名次列表
-        - isDisplayGroup // 顯示上依照團隊區分 or 排行榜
-        - isRank // 依照團隊 or 分數排行
-    - wordchain
+- router
+    - controlRouter // 控制路由
+- charades
+- countdown
+- ppt
+    - page // 頁數
+- rank
+    - teamCnt // 分隊隊伍
+    - rankData // 名次列表
+    - isDisplayGroup // 顯示上依照團隊區分 or 排行榜
+    - isRank // 依照團隊 or 分數排行
+- wordchain
 ```

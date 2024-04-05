@@ -1,9 +1,20 @@
 <script>
 import { RouterLink, RouterView } from "vue-router";
+
+// firebase
+import firebaseCrud from "@/utils/firebaseCrud";
+
 export default {
+  mixins: [firebaseCrud],
   components: {
     RouterLink,
     RouterView,
+  },
+  methods: {
+    remoteSwitchPage(routerPage) {
+      // 路由不同
+      this.updateData({ controlRouter: routerPage }, "/router/");
+    },
   },
 };
 </script>
@@ -18,10 +29,20 @@ export default {
       </h4>
       <div class="d-flex flex-wrap">
         <div class="p-2">
-          <RouterLink to="ppt" class="text-white">活動流程</RouterLink>
+          <RouterLink
+            to="ppt"
+            class="text-white"
+            @click="remoteSwitchPage('ppt')"
+            >活動流程</RouterLink
+          >
         </div>
         <div class="p-2">
-          <RouterLink to="rank" class="text-white">排行榜</RouterLink>
+          <RouterLink
+            to="rank"
+            class="text-white"
+            @click="remoteSwitchPage('rank')"
+            >排行榜</RouterLink
+          >
         </div>
       </div>
     </div>

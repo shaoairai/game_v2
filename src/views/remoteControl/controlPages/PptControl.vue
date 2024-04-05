@@ -10,6 +10,9 @@ export default {
     return {
       page: 0,
       lastPage: 21,
+
+      // 遠端控制路由
+      controlRouter: "",
     };
   },
   methods: {
@@ -20,6 +23,14 @@ export default {
         console.log(snapshot.val());
 
         vm.page = snapshot.val().ppt.page;
+
+        // 路由判斷
+        vm.controlRouter = snapshot.val().router.controlRouter;
+        const fullPath = vm.$route.fullPath;
+        const pathSegments = fullPath.split("/");
+        if (vm.controlRouter != pathSegments[1]) {
+          vm.$router.push(vm.controlRouter);
+        }
       });
     },
     // 上頁

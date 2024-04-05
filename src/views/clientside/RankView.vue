@@ -54,6 +54,8 @@ export default {
       // Firebase
       // 顯示所有firebase資料
       displayAllFirbase: "",
+      // 遠端控制路由
+      controlRouter: "",
     };
   },
   methods: {
@@ -319,6 +321,14 @@ export default {
         vm.list = snapshot.val().rank.rankData;
         vm.isRank = snapshot.val().rank.isRank;
         vm.isDisplayGroup = snapshot.val().rank.isDisplayGroup;
+
+        // 路由判斷
+        vm.controlRouter = snapshot.val().router.controlRouter;
+        const fullPath = vm.$route.fullPath;
+        const pathSegments = fullPath.split("/");
+        if (vm.controlRouter != pathSegments[1]) {
+          vm.$router.push(vm.controlRouter);
+        }
 
         // 動態數量隊伍命名
         this.generateTeams();
