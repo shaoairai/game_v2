@@ -206,7 +206,7 @@ export default {
   components: {
     RouterLink,
   },
-  async mounted() {
+  mounted() {
     // 即時監聽 Firebase 資料
     this.onReadData();
 

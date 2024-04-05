@@ -472,7 +472,9 @@ export default {
 
       <div class="position-relative mt-5">
         <div class="h2-title">
-          <h2 class="text-center">排行榜</h2>
+          <h2 class="text-center mt-1">
+            {{ isDisplayGroup ? "各組成員" : "排行榜" }}
+          </h2>
         </div>
 
         <!-- 切換顯示方式 -->
@@ -719,7 +721,7 @@ export default {
         </RouterLink>
 
         <!-- 連至各遊戲 -->
-        <RouterLink to="/charades">
+        <!-- <RouterLink to="/charades">
           <button type="button" class="btn btn-primary set-btn me-2 my-2">
             比
           </button>
@@ -739,7 +741,7 @@ export default {
           >
             自
           </button>
-        </RouterLink>
+        </RouterLink> -->
 
         <!-- 設定按鈕 -->
         <button
