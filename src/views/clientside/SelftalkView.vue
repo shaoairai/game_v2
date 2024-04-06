@@ -71,15 +71,15 @@ export default {
       this.play = true;
       this.pause = false;
     },
-    // 重新計時
-    countReset() {
-      const vm = this;
-      clearTimeout(vm.timer); // 停止計時
-      this.play = true;
-      this.pause = false;
+    // // 重新計時
+    // countReset() {
+    //   const vm = this;
+    //   clearTimeout(vm.timer); // 停止計時
+    //   this.play = true;
+    //   this.pause = false;
 
-      // vm.updateData({ sec: vm.initSec }, "/selftalk/");
-    },
+    //   // vm.updateData({ sec: vm.initSec }, "/selftalk/");
+    // },
     // 共有幾隊
     addGroup() {
       // 團體分數物件
@@ -295,48 +295,7 @@ export default {
           <div class="teamTitle fs-3 text-center text-white py-1 mb-4">
             自說字話
           </div>
-          <!-- 倒數計時器 -->
-          <div
-            class="countDownArea d-flex flex-wrap justify-content-center align-items-center pb-2"
-          >
-            <!-- 重新計時 -->
-            <button
-              type="button"
-              class="btn btn-primary"
-              style="width: 50px; height: 50px; border-radius: 100px"
-              @click="countReset(), pauseAudio()"
-            >
-              <font-awesome-icon icon="fa-solid fa-rotate-right" />
-            </button>
-            <!-- <div id="sec" class="sec">{{ sec }}</div> -->
-            <!-- 開始計時 -->
-            <button
-              type="button"
-              class="btn btn-primary ms-3"
-              style="width: 50px; height: 50px; border-radius: 100px"
-              @click="remoteClickPlay"
-              v-if="play"
-            >
-              <font-awesome-icon icon="fa-solid fa-play" />
-            </button>
-            <!-- 音樂播放 -->
-            <audio
-              :src="tempo_words_in_a_hurry"
-              controls
-              ref="audioRef"
-              class="d-none"
-            ></audio>
-            <!-- 暫停計時 -->
-            <button
-              type="button"
-              class="btn btn-primary ms-3"
-              style="width: 50px; height: 50px"
-              @click="remoteClickPlay"
-              v-if="pause"
-            >
-              <font-awesome-icon icon="fa-solid fa-pause" />
-            </button>
-          </div>
+
           <!-- 換題目 -->
           <div
             class="d-flex justify-content-between align-items-center"
@@ -369,7 +328,7 @@ export default {
             <div
               class="topic topic-bg d-flex align-items-center justify-content-center"
             >
-              <div class="pe-3">{{ topicArr[currentTopic] }}</div>
+              <div>{{ topicArr[currentTopic] }}</div>
             </div>
 
             <div class="py-3">
@@ -381,6 +340,48 @@ export default {
               </div>
               <div class="btn btn-primary m-2" @click="nextTopic">下一題</div>
             </div>
+          </div>
+
+          <div
+            class="countDownArea d-flex flex-wrap justify-content-center align-items-center pb-2"
+          >
+            <!-- 重新計時 -->
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="width: 50px; height: 50px; border-radius: 100px"
+              @click="pauseAudio()"
+            >
+              <font-awesome-icon icon="fa-solid fa-arrow-rotate-left" />
+            </button>
+            <!-- <div id="sec" class="sec">{{ sec }}</div> -->
+            <!-- 開始計時 -->
+            <button
+              type="button"
+              class="btn btn-primary ms-3"
+              style="width: 50px; height: 50px; border-radius: 100px"
+              @click="remoteClickPlay"
+              v-if="play"
+            >
+              <font-awesome-icon icon="fa-solid fa-play" />
+            </button>
+            <!-- 音樂播放 -->
+            <audio
+              :src="tempo_words_in_a_hurry"
+              controls
+              ref="audioRef"
+              class="d-none"
+            ></audio>
+            <!-- 暫停計時 -->
+            <button
+              type="button"
+              class="btn btn-primary ms-3"
+              style="width: 50px; height: 50px"
+              @click="remoteClickPlay"
+              v-if="pause"
+            >
+              <font-awesome-icon icon="fa-solid fa-pause" />
+            </button>
           </div>
 
           <!-- 顯示隊伍 -->
@@ -457,7 +458,7 @@ export default {
               <font-awesome-icon icon="fa-solid fa-gear" />
             </button>
             <!-- 設定按鈕 以外的按鈕 -->
-            <Transition-group name="set-btn">
+            <transition-group name="set-btn">
               <div class="setting-btns" v-if="setBtn">
                 <!-- 啟用/關閉新增團隊按鈕 -->
                 <button
@@ -483,7 +484,7 @@ export default {
                 >
                   <font-awesome-icon icon="fa-regular fa-trash-can" />
                 </button></div
-            ></Transition-group>
+            ></transition-group>
           </div>
         </div>
       </div>

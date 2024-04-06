@@ -453,7 +453,7 @@ export default {
               <font-awesome-icon icon="fa-solid fa-gear" />
             </button>
             <!-- 設定按鈕 以外的按鈕 -->
-            <Transition-group name="set-btn">
+            <transition-group name="set-btn">
               <div class="setting-btns" v-if="setBtn">
                 <!-- 啟用/關閉新增團隊按鈕 -->
                 <button
@@ -479,7 +479,7 @@ export default {
                 >
                   <font-awesome-icon icon="fa-regular fa-trash-can" />
                 </button></div
-            ></Transition-group>
+            ></transition-group>
           </div>
         </div>
       </div>
