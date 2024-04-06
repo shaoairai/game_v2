@@ -25,7 +25,7 @@ export default {
       class="d-flex flex-column justify-content-center align-items-center bg-primary text-white text-center m-0"
     >
       <h4 class="pt-3 m-0">
-        <font-awesome-icon icon="fa-solid fa-wifi" /> 活動流程
+        <font-awesome-icon icon="fa-solid fa-wifi" /> 共伴程式遙控器
       </h4>
       <div class="d-flex flex-wrap">
         <div class="p-2">
@@ -51,6 +51,23 @@ export default {
             @click="remoteSwitchPage('charades')"
             >比手畫腳</RouterLink
           >
+        </div>
+        <div class="p-2">
+          <RouterLink
+            to="jump"
+            class="text-white"
+            @click="remoteSwitchPage('jump')"
+            >跳跳Tempo</RouterLink
+          >
+        </div>
+        <div class="p-2">
+          <RouterLink
+            to="selftalk"
+            class="text-white"
+            @click="remoteSwitchPage('selftalk')"
+          >
+            自說字話
+          </RouterLink>
         </div>
       </div>
     </div>

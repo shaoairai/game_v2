@@ -45,6 +45,7 @@ npm run lint
     - playMusic // 音樂播放
     - groupList // 各隊該單元分數
 - jump
+    - initSec // 初始計時器
     - sec // 計時器
     - playMusic // 音樂播放
     - groupList // 各隊該單元分數
@@ -58,5 +59,10 @@ npm run lint
     - rankData // 名次列表
     - isDisplayGroup // 顯示上依照團隊區分 or 排行榜
     - isRank // 依照團隊 or 分數排行
-- wordchain
+- selftalk
+    - groupList // 各隊該單元分數
+    - topicArr // 題目列表
+    - ready // 回到預備詞
+    - currentTopic // 當前題目索引值
+    - norepeatArr // 不重複的陣列
 ```

@@ -55,7 +55,11 @@ export default {
                     </li>
                   </RouterLink>
                   <div class="line mb-4"></div>
-                  <RouterLink to="/charades" class="list-a mb-4">
+                  <RouterLink
+                    to="/charades"
+                    class="list-a mb-4"
+                    @click="remoteSwitchPage('charades')"
+                  >
                     <li class="list-group-item fs-4">
                       <font-awesome-icon
                         icon="fa-solid fa-hands-asl-interpreting"
@@ -63,21 +67,30 @@ export default {
                       比手畫腳
                     </li>
                   </RouterLink>
-                  <RouterLink to="/jump" class="list-a mb-4">
+                  <RouterLink
+                    to="/jump"
+                    class="list-a mb-4"
+                    @click="remoteSwitchPage('jump')"
+                  >
                     <li class="list-group-item fs-4">
                       <font-awesome-icon icon="fa-solid fa-people-arrows" />
                       跳跳 Tempo
                     </li>
                   </RouterLink>
-                  <RouterLink to="/selftalk" class="list-a mb-4">
+                  <RouterLink
+                    to="/selftalk"
+                    class="list-a mb-4"
+                    @click="remoteSwitchPage('selftalk')"
+                  >
                     <li class="list-group-item fs-4">
                       <font-awesome-icon icon="fa-solid fa-comments" />
-                      自說自話
+                      自說字話
                     </li>
                   </RouterLink>
-                  <RouterLink to="/countDown" class="list-a mb-4">
+                  <!-- <RouterLink to="/countDown" class="list-a mb-4">
                     <li class="list-group-item fs-4">
-                      <font-awesome-icon icon="fa-solid fa-font" /> 急中生字
+                      <font-awesome-icon icon="fa-solid fa-font" />
+                      急中生字(單機)
                     </li>
                   </RouterLink>
                   <RouterLink to="/wordChain" class="list-a mb-4">
@@ -86,9 +99,9 @@ export default {
                         icon="fa-solid fa-music"
                         class="me-1"
                       />
-                      接龍 Tempo
+                      接龍 Tempo(單機)
                     </li>
-                  </RouterLink>
+                  </RouterLink> -->
                 </ul>
               </div>
             </div>
