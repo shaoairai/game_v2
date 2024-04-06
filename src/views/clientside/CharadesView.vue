@@ -53,15 +53,15 @@ export default {
         this.pause = true;
       }
     },
-    // 暫停播放
-    pauseAudio() {
-      if (this.$refs.audioRef) {
-        this.$refs.audioRef.pause();
-        this.play = true;
-        this.pause = false;
-      }
-    },
-    // 暫停播放
+    // // 暫停播放
+    // pauseAudio() {
+    //   if (this.$refs.audioRef) {
+    //     this.$refs.audioRef.pause();
+    //     this.play = true;
+    //     this.pause = false;
+    //   }
+    // },
+    // 重設播放
     resetAudio() {
       if (this.$refs.audioRef) {
         this.$refs.audioRef.pause();

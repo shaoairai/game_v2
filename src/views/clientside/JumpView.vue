@@ -2,15 +2,24 @@
 import { RouterLink } from "vue-router";
 import tempo_words_in_a_hurry from "@/assets/countDown/tempo_words_in_a_hurry.mp3";
 
+// firebase
+import { db } from "@/utils/firebase.js";
+import { ref, onValue } from "firebase/database";
+import firebaseCrud from "@/utils/firebaseCrud";
+
 export default {
+  mixins: [firebaseCrud],
   data() {
     return {
       // 倒數計時
-      sec: 120,
+      // 初始時間
+      initSec: 0,
+      // 修改初始時間
+      initSecTmp: 0,
+      sec: 0,
       timer: null,
 
       // 單元團體記分板
-      inputText: "",
       groupList: [],
       teamColor: [
         "teamRed",
@@ -31,18 +40,30 @@ export default {
       play: true,
       pause: false,
 
-      // 題目
-      topicArr: [
-        "1. 造詞題目：陸地上的動物",
-        "2. 造詞題目：甜的食物",
-        "3. 造詞題目：方形的東西",
-        "4. 造詞題目：國家或地名",
-        "5. 造詞題目：家裡看得到的東西",
-      ],
+      // topicArr: [
+      //   "1. 造詞題目：陸地上的動物",
+      //   "2. 造詞題目：甜的食物",
+      //   "3. 造詞題目：方形的東西",
+      //   "4. 造詞題目：國家或地名",
+      //   "5. 造詞題目：家裡看得到的東西",
+      // ],
       currentTopic: 0,
 
       // 音訊
       tempo_words_in_a_hurry: tempo_words_in_a_hurry,
+
+      // 遠端控制路由
+      controlRouter: "",
+      // 遠端播放
+      playMusic: false,
+      // 題目
+      isChangeTopics: false,
+      topic: "預設題目",
+      leftText: "左題目",
+      rightText: "右題目",
+      topicTmp: "",
+      leftTextTmp: "",
+      rightTextTmp: "",
     };
   },
   methods: {
@@ -66,28 +87,30 @@ export default {
     },
     // 暫停
     countPause() {
-      clearTimeout(this.timer); // 停止計時
+      const vm = this;
+      clearTimeout(vm.timer); // 停止計時
       // 切換按鈕
       this.play = true;
       this.pause = false;
     },
     // 重新計時
     countReset() {
-      clearTimeout(this.timer); // 停止計時
+      const vm = this;
+      clearTimeout(vm.timer); // 停止計時
       this.sec = 120;
       this.play = true;
       this.pause = false;
+
+      vm.updateData({ sec: vm.initSec }, "/jump/");
     },
     // 共有幾隊
-    addGroup(inputText) {
+    addGroup() {
       // 團體分數物件
       const groupObj = {
         id: new Date().getTime(),
-        team: this.inputText,
         score: 0,
       };
       this.groupList.push(groupObj);
-      this.inputText = "";
     },
     // 加分
     plusNum(item) {
@@ -115,22 +138,135 @@ export default {
     },
     // 存檔
     saveRank() {
-      localStorage.setItem("jumpGroup", JSON.stringify(this.groupList));
+      const vm = this;
+      vm.updateData(
+        {
+          groupList: vm.groupList,
+          topic: vm.topic,
+          leftText: vm.leftText,
+          rightText: vm.rightText,
+          initSec: vm.initSec,
+        },
+        "/jump/"
+      );
+
+      // localStorage.setItem("jumpGroup", JSON.stringify(this.groupList));
     },
-    // 上一題
-    preTopic() {
-      if (this.currentTopic > 0) {
-        this.currentTopic -= 1;
-      } else {
-        this.currentTopic = this.topicArr.length - 1;
+    // // 上一題
+    // preTopic() {
+    //   if (this.currentTopic > 0) {
+    //     this.currentTopic -= 1;
+    //   } else {
+    //     this.currentTopic = this.topicArr.length - 1;
+    //   }
+    // },
+    // // 下一題
+    // nextTopic() {
+    //   if (this.currentTopic < this.topicArr.length - 1) {
+    //     this.currentTopic += 1;
+    //   } else {
+    //     this.currentTopic = 0;
+    //   }
+    // },
+    // 開始播放
+    playAudio() {
+      if (this.$refs.audioRef) {
+        this.$refs.audioRef.play();
+        this.play = false;
+        this.pause = true;
       }
     },
-    // 下一題
-    nextTopic() {
-      if (this.currentTopic < this.topicArr.length - 1) {
-        this.currentTopic += 1;
+    // // 暫停播放
+    // pauseAudio() {
+    //   if (this.$refs.audioRef) {
+    //     this.$refs.audioRef.pause();
+    //     this.play = true;
+    //     this.pause = false;
+    //   }
+    // },
+    // 暫停播放
+    resetAudio() {
+      if (this.$refs.audioRef) {
+        this.$refs.audioRef.pause();
+        this.$refs.audioRef.currentTime = 0;
+        this.play = true;
+        this.pause = false;
+      }
+    },
+    // 換題目
+    changeTopics() {
+      const vm = this;
+      vm.isChangeTopics = true;
+      vm.topicTmp = vm.topic;
+      vm.leftTextTmp = vm.leftText;
+      vm.rightTextTmp = vm.rightText;
+      vm.initSecTmp = vm.initSec;
+    },
+    // 確定題目
+    confirmTopics() {
+      const vm = this;
+      vm.isChangeTopics = false;
+      vm.topic = vm.topicTmp;
+      vm.leftText = vm.leftTextTmp;
+      vm.rightText = vm.rightTextTmp;
+      vm.initSec = vm.initSecTmp;
+
+      vm.saveRank();
+    },
+    // 即時監聽讀取
+    onReadData() {
+      const vm = this;
+      onValue(ref(db), (snapshot) => {
+        console.log(snapshot.val());
+
+        // 避免空值
+        if (!snapshot.val().jump.groupList) {
+          vm.groupList = [];
+        } else {
+          vm.groupList = snapshot.val().jump.groupList;
+        }
+
+        vm.sec = snapshot.val().jump.sec;
+        vm.initSec = snapshot.val().jump.initSec;
+        vm.topic = snapshot.val().jump.topic;
+        vm.leftText = snapshot.val().jump.leftText;
+        vm.rightText = snapshot.val().jump.rightText;
+
+        // 播放音樂
+        vm.playMusic = snapshot.val().jump.playMusic;
+        vm.remotePlay();
+
+        // // 路由判斷
+        // vm.controlRouter = snapshot.val().router.controlRouter;
+        // const fullPath = vm.$route.fullPath;
+        // const pathSegments = fullPath.split("/");
+        // if (vm.controlRouter != pathSegments[1]) {
+        //   vm.$router.push(vm.controlRouter);
+        // }
+      });
+    },
+    // 按下播放
+    remoteClickPlay() {
+      const vm = this;
+      if (!vm.playMusic) {
+        vm.playMusic = true;
+        vm.updateData({ playMusic: vm.playMusic, sec: vm.sec }, "/jump/");
+        vm.countDwn();
+        vm.playAudio();
       } else {
-        this.currentTopic = 0;
+        vm.playMusic = false;
+        vm.countPause();
+        vm.resetAudio();
+        vm.updateData({ playMusic: vm.playMusic, sec: vm.sec }, "/jump/");
+      }
+    },
+    // 遠端播放
+    remotePlay() {
+      const vm = this;
+      if (vm.playMusic) {
+        vm.playAudio();
+      } else {
+        vm.resetAudio();
       }
     },
   },
@@ -138,14 +274,16 @@ export default {
   watch: {},
   components: { RouterLink },
   mounted() {
-    // 一開始先讀取 localStorage
-    this.groupList = JSON.parse(localStorage.getItem("jumpGroup"));
-    console.log(this.groupList);
-    if (!this.groupList) {
-      this.groupList = [];
-      console.log("this.groupList");
-      console.log(this.groupList);
-    }
+    this.onReadData();
+
+    // // 一開始先讀取 localStorage
+    // this.groupList = JSON.parse(localStorage.getItem("jumpGroup"));
+    // console.log(this.groupList);
+    // if (!this.groupList) {
+    //   this.groupList = [];
+    //   console.log("this.groupList");
+    //   console.log(this.groupList);
+    // }
   },
 };
 </script>
@@ -154,14 +292,11 @@ export default {
   <div>
     <div class="bg">
       <!-- 單元團體記分板 -->
-      <div
-        id="groupScoreboard"
-        class="position-absolute top-50 start-50 translate-middle w-100"
-      >
+      <div id="groupScoreboard" class="w-100">
         <div class="container">
           <!-- 倒數計時器 -->
           <div
-            class="countDownArea d-flex justify-content-center align-items-center pb-2"
+            class="countDownArea d-flex flex-wrap justify-content-center align-items-center pb-2"
           >
             <!-- 重新計時 -->
             <button
@@ -178,7 +313,7 @@ export default {
               type="button"
               class="btn btn-primary ms-3"
               style="width: 50px; height: 50px; border-radius: 100px"
-              @click="countDwn(), playAudio()"
+              @click="remoteClickPlay"
               v-if="play"
             >
               <font-awesome-icon icon="fa-solid fa-play" />
@@ -195,27 +330,58 @@ export default {
               type="button"
               class="btn btn-primary ms-3"
               style="width: 50px; height: 50px"
-              @click="countPause(), pauseAudio()"
+              @click="remoteClickPlay"
               v-if="pause"
             >
               <font-awesome-icon icon="fa-solid fa-pause" />
             </button>
           </div>
 
+          <!-- 換題目 -->
+          <div
+            class="d-flex justify-content-end align-items-center"
+            style="margin: 8px 2%"
+          >
+            <div class="me-3">
+              <div v-if="isChangeTopics">
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="initSecTmp"
+                />
+              </div>
+              <div v-else>限時 {{ initSec }} 秒</div>
+            </div>
+
+            <div>
+              <div
+                v-if="!isChangeTopics"
+                class="btn btn-primary"
+                @click="changeTopics"
+              >
+                <font-awesome-icon icon="fa-regular fa-pen-to-square" />
+              </div>
+              <div v-else class="btn btn-primary" @click="confirmTopics">
+                <font-awesome-icon icon="fa-solid fa-check" />
+              </div>
+            </div>
+          </div>
           <!-- 題目 -->
           <div class="topic-outer fs-3">
-            <div class="topic-bg"></div>
             <div
-              class="topic position-absolute top-50 start-50 translate-middle"
+              class="topic topic-bg d-flex align-items-center justify-content-center"
             >
-              {{ topicArr[currentTopic] }}
+              <div v-if="isChangeTopics">
+                <input type="text" class="form-control" v-model="topicTmp" />
+              </div>
+              <div v-else>{{ topic }}</div>
             </div>
-            <div class="pre-topic" @click="preTopic">
+            <!-- <div class="pre-topic" @click="preTopic">
               <font-awesome-icon icon="fa-solid fa-circle-left" />
             </div>
             <div class="next-topic" @click="nextTopic">
               <font-awesome-icon icon="fa-solid fa-circle-right" />
-            </div>
+            </div> -->
           </div>
 
           <!-- 左右題目 -->
@@ -223,12 +389,26 @@ export default {
             <div
               class="center-line d-flex justify-content-center align-items-center py-5 w-100 fs-2"
             >
-              左邊
+              <div v-if="isChangeTopics">
+                <input type="text" class="form-control" v-model="leftTextTmp" />
+              </div>
+              <div v-else>
+                {{ leftText }}
+              </div>
             </div>
             <div
               class="d-flex justify-content-center align-items-center py-5 w-100 fs-2"
             >
-              右邊
+              <div v-if="isChangeTopics">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="rightTextTmp"
+                />
+              </div>
+              <div v-else>
+                {{ rightText }}
+              </div>
             </div>
           </div>
 
@@ -237,13 +417,16 @@ export default {
             跳跳 Tempo | 團隊分數
           </div>
           <!-- 顯示隊伍 -->
-          <div id="teamDisplay" class="d-flex justify-content-center">
+          <div
+            id="teamDisplay"
+            class="d-flex justify-content-center flex-column flex-md-row"
+          >
             <div
               v-for="(group, index) in groupList"
               :key="group.id"
               :class="['flex-fill', teamColor[index]]"
             >
-              <div class="teamBg position-relative">
+              <div class="teamBg position-relative my-1">
                 <div
                   class="teamScore position-absolute top-50 start-50 translate-middle"
                 >
@@ -313,7 +496,7 @@ export default {
                 <button
                   type="button"
                   class="btn btn-primary ms-2"
-                  @click="addGroup(inputText), saveRank()"
+                  @click="addGroup(), saveRank()"
                 >
                   <font-awesome-icon icon="fa-solid fa-user-plus" />
                 </button>
@@ -369,31 +552,12 @@ body {
   margin: 0 auto;
 }
 .topic-bg {
-  background: white;
-  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.5);
   width: 100%;
   height: 100%;
   border-radius: 8px;
 }
 
-/* 上下一題 */
-.pre-topic,
-.next-topic {
-  position: absolute;
-  top: 16px;
-  color: #3c3c3c;
-}
-.pre-topic:hover,
-.next-topic:hover {
-  cursor: pointer;
-  color: #0d6efd;
-}
-.pre-topic {
-  left: 8px;
-}
-.next-topic {
-  right: 8px;
-}
 .fa-circle-left,
 .fa-circle-right {
   font-size: 42px;

@@ -46,6 +46,7 @@ import {
   faComments,
   faListUl,
   faArrowRotateLeft,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 // 所有要嵌入的 icon 都要加在這裡
 
@@ -90,7 +91,8 @@ library.add(
   faComments,
   faListUl,
   faRectangleList,
-  faArrowRotateLeft
+  faArrowRotateLeft,
+  faCheck
 ); // 所有要嵌入的 icon 都要加在這裡
 
 const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);

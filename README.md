@@ -44,7 +44,13 @@ npm run lint
 - charades
     - playMusic // 音樂播放
     - groupList // 各隊該單元分數
-- countdown
+- jump
+    - sec // 計時器
+    - playMusic // 音樂播放
+    - groupList // 各隊該單元分數
+    - topic // 主題目
+    - leftText // 左題目
+    - rightText // 右題目
 - ppt
     - page // 頁數
 - rank
