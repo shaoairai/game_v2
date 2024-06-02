@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from "vue-router";
+import { confirmPw } from "@/utils/localStoragePw";
 import hand from "@/assets/charades/hand.mp3";
 
 // firebase
@@ -164,16 +165,9 @@ export default {
     RouterLink,
   },
   mounted() {
-    this.onReadData();
-
-    // 一開始先讀取 localStorage
-    // this.groupList = JSON.parse(localStorage.getItem("charadesGroup"));
-    // console.log(this.groupList);
-    // if (!this.groupList) {
-    //   this.groupList = [];
-    //   console.log("this.groupList");
-    //   console.log(this.groupList);
-    // }
+    if (confirmPw(this.$router)) {
+      this.onReadData();
+    }
   },
 };
 </script>

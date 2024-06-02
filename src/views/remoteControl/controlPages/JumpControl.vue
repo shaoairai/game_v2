@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from "vue-router";
+import { confirmPw } from "@/utils/localStoragePw";
 import tempo_words_in_a_hurry from "@/assets/countDown/tempo_words_in_a_hurry.mp3";
 
 // firebase
@@ -252,7 +253,9 @@ export default {
   watch: {},
   components: { RouterLink },
   mounted() {
-    this.onReadData();
+    if (confirmPw(this.$router)) {
+      this.onReadData();
+    }
   },
 };
 </script>

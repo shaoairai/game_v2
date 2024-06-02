@@ -1,4 +1,5 @@
 <script>
+import { confirmPw } from "@/utils/localStoragePw";
 // firebase
 import { db } from "@/utils/firebase.js";
 import { ref, onValue } from "firebase/database";
@@ -49,8 +50,10 @@ export default {
     },
   },
   mounted() {
-    // 即時監聽 Firebase 資料
-    this.onReadData();
+    if (confirmPw(this.$router)) {
+      // 即時監聽 Firebase 資料
+      this.onReadData();
+    }
   },
 };
 </script>

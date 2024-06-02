@@ -1,5 +1,6 @@
 <script>
 import { RouterLink, RouterView } from "vue-router";
+import { confirmPw } from "@/utils/localStoragePw";
 
 // firebase
 import { db } from "@/utils/firebase.js";
@@ -31,8 +32,10 @@ export default {
     },
   },
   mounted() {
-    // 即時監聽 Firebase 資料
-    this.onReadData();
+    if (confirmPw(this.$router)) {
+      // 即時監聽 Firebase 資料
+      this.onReadData();
+    }
   },
 };
 </script>

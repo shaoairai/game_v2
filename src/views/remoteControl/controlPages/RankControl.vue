@@ -2,6 +2,7 @@
 
 <script>
 import { RouterLink } from "vue-router";
+import { confirmPw } from "@/utils/localStoragePw";
 
 // firebase
 import { db } from "@/utils/firebase.js";
@@ -343,19 +344,9 @@ export default {
     RouterLink,
   },
   mounted() {
-    this.onReadData();
-
-    //一開始先讀取 localStorage
-    // let preloadData = JSON.parse(localStorage.getItem("listData"));
-
-    // let preloadDataTeams = JSON.parse(localStorage.getItem("listDataTeams"));
-    // 如果有資料
-    // if (preloadData) {
-    //   this.list = JSON.parse(localStorage.getItem("listData"));
-    // }
-    // if (preloadDataTeams) {
-    //   this.teamCnt = JSON.parse(localStorage.getItem("listDataTeams"));
-    // }
+    if (confirmPw(this.$router)) {
+      this.onReadData();
+    }
   },
 };
 </script>

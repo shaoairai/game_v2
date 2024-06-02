@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from "vue-router";
+import { confirmPw } from "@/utils/localStoragePw";
 import tempo_solitaire from "@/assets/wordChain/tempo_solitaire.mp3";
 
 export default {
@@ -82,11 +83,13 @@ export default {
     RouterLink,
   },
   mounted() {
-    //一開始先讀取 localStorage
-    let preloadData = JSON.parse(localStorage.getItem("listData"));
-    // 如果有資料
-    if (preloadData) {
-      this.list = JSON.parse(localStorage.getItem("listData"));
+    if (confirmPw(this.$router)) {
+      //一開始先讀取 localStorage
+      let preloadData = JSON.parse(localStorage.getItem("listData"));
+      // 如果有資料
+      if (preloadData) {
+        this.list = JSON.parse(localStorage.getItem("listData"));
+      }
     }
   },
 };

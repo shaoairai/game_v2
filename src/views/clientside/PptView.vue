@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from "vue-router";
+import { confirmPw } from "@/utils/localStoragePw";
 
 // firebase
 import { db } from "@/utils/firebase.js";
@@ -207,11 +208,13 @@ export default {
     RouterLink,
   },
   mounted() {
-    // 即時監聽 Firebase 資料
-    this.onReadData();
+    if (confirmPw(this.$router)) {
+      // 即時監聽 Firebase 資料
+      this.onReadData();
 
-    // 圖片總數
-    this.totalImgsCnt = this.imgList.length;
+      // 圖片總數
+      this.totalImgsCnt = this.imgList.length;
+    }
   },
 };
 </script>
