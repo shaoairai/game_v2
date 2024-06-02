@@ -10,6 +10,7 @@ export function confirmPw(router) {
       return true;
     } else {
       // 登入失敗
+      alert("密碼錯誤！");
       router.push({ name: "home" });
       return false;
     }
