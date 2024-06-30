@@ -28,7 +28,6 @@ import pptImg18 from "@/assets/pptImg/18.jpg";
 import pptImg19 from "@/assets/pptImg/19.jpg";
 import pptImg20 from "@/assets/pptImg/20.jpg";
 import pptImg21 from "@/assets/pptImg/21.jpg";
-import pptImg22 from "@/assets/pptImg/22.jpg";
 
 export default {
   mixins: [firebaseCrud],
@@ -56,7 +55,6 @@ export default {
         { id: "img-id-19", src: pptImg19, alt: "19" },
         { id: "img-id-20", src: pptImg20, alt: "20" },
         { id: "img-id-21", src: pptImg21, alt: "21" },
-        { id: "img-id-22", src: pptImg22, alt: "22" },
       ],
 
       // 是否顯示右上角跳至遊戲頁的按鈕
@@ -88,11 +86,11 @@ export default {
       }
 
       // 跳頁
-      if (this.currentIndex === 13) {
-        this.hasFinalGame = true;
-      } else {
-        this.hasFinalGame = false;
-      }
+      // if (this.currentIndex === 11) {
+      //   this.hasFinalGame = true;
+      // } else {
+      //   this.hasFinalGame = false;
+      // }
 
       // 顯示遊戲連結按鈕
       // if (this.currentIndex === 7) {
@@ -116,7 +114,7 @@ export default {
       }
 
       // 跳頁
-      if (this.currentIndex === 13) {
+      if (this.currentIndex === 12) {
         this.hasFinalGame = true;
       } else {
         this.hasFinalGame = false;
@@ -137,13 +135,13 @@ export default {
       // }
     },
     // 連到遊戲頁面後，要自動往後翻一頁
-    autoNext() {
-      const vm = this;
-      console.log("自動下頁");
-      setTimeout(function () {
-        vm.$refs.nextSwitchImg.click();
-      }, 1000);
-    },
+    // autoNext() {
+    //   const vm = this;
+    //   console.log("自動下頁");
+    //   setTimeout(function () {
+    //     vm.$refs.nextSwitchImg.click();
+    //   }, 1000);
+    // },
     // 跳頁，跳過爭冠遊戲
     jumpSwitchImg(event) {
       this.currentIndex += 2;
@@ -248,7 +246,7 @@ export default {
           class="btn btn-outline-primary me-3"
           style="width: 64px"
           :style="
-            currentIndex === 12 || currentIndex === 15
+            currentIndex === 14 || currentIndex === 19 || currentIndex === 20
               ? {
                   color: 'rgba(0,0,0,0)',
                   borderColor: 'rgba(0,0,0,0)',
@@ -268,7 +266,7 @@ export default {
           class="btn me-3"
           style="width: 64px"
           :style="
-            currentIndex === 12 || currentIndex === 15
+            currentIndex === 14 || currentIndex === 19 || currentIndex === 20
               ? {
                   color: 'rgba(0,0,0,0)',
                   borderColor: 'rgba(0,0,0,0)',
@@ -287,7 +285,7 @@ export default {
           class="btn"
           style="width: 64px"
           :style="
-            currentIndex === 12 || currentIndex === 15
+            currentIndex === 14 || currentIndex === 19 || currentIndex === 20
               ? {
                   color: 'rgba(0,0,0,0)',
                   borderColor: 'rgba(0,0,0,0)',
@@ -322,7 +320,7 @@ export default {
         </button>
       </div>
 
-      <!-- 連結計分頁 -->
+      <!-- 連結計分頁 
       <div class="position-absolute top-0 end-0">
         <div class="mt-2 me-2">
           <RouterLink
@@ -342,7 +340,7 @@ export default {
             </button>
           </RouterLink>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>

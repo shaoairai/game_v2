@@ -510,7 +510,7 @@ export default {
                   {{ item.team }}
                 </div>
                 <div class="rank-text d-flex flex-grow-1 px-2">
-                  {{ item.sex === "0" ? "女" : "男" }}
+                  <!-- {{ item.sex === "0" ? "女" : "男" }} -->
                   <div class="flex-grow-1">{{ item.text }}</div>
                   <div>{{ item.score }}</div>
                 </div>
@@ -560,25 +560,45 @@ export default {
           <div
             v-for="(teamName, index) in teamArr"
             :key="index"
-            class="groupDisplay p-2"
+            class="groupDisplay p-2 position-relative"
           >
+            <div :class="{ 'rwd-rank-teamName': !isRank }">{{ teamName }}</div>
             <div
-              class="text-white h-100 list-outer"
+              class="text-white h-100 list-outer d-flex flex-wrap"
               style="border: 2px solid white"
             >
               <!-- 每個人物渲染 -->
-              <div v-for="(item, i) in list" :key="item.id">
-                <div v-if="item.team === teamName" class="list-li ps-5">
+              <div
+                v-for="(item, i) in list"
+                :key="item.id"
+                :class="{ 'w-50': item.team === teamName }"
+              >
+                <div
+                  v-if="item.team === teamName"
+                  class="list-li ps-5"
+                  :class="{ 'rwd-list-li': !isRank }"
+                >
                   <div class="list-content d-flex align-items-center">
                     <div class="rank-num" v-if="isRank">{{ i + 1 }}</div>
-                    <div class="rank-num" v-if="!isRank">
+                    <div
+                      class="rank-num"
+                      :class="{ 'rwd-rank-num': !isRank }"
+                      v-if="!isRank"
+                    >
                       <!-- <img src="@/assets/img/santa.png" style="width: 40px" /> -->
                       {{ item.team }}
                     </div>
                     <div class="rank-text d-flex flex-grow-1 pe-4">
-                      {{ item.sex === "0" ? "女" : "男" }}
-                      <div class="flex-grow-1">{{ item.text }}</div>
-                      <div>{{ item.score }}</div>
+                      <!-- {{ item.sex === "0" ? "女" : "男" }} -->
+                      <div
+                        class="flex-grow-1"
+                        :class="{ 'rwd-rank-text': !isRank }"
+                      >
+                        {{ item.text }}
+                      </div>
+                      <div :class="{ 'rank-score': !isRank }">
+                        {{ item.score }}
+                      </div>
                     </div>
                     <!-- 加分 -->
                     <button
@@ -690,16 +710,6 @@ export default {
             >
               團<font-awesome-icon icon="fa-solid fa-plus" />
             </button>
-            <button
-              type="button"
-              class="btn btn-primary me-2"
-              @click="minusNumTeam(), saveRank(), resetNumTeam()"
-            >
-              團<font-awesome-icon icon="fa-solid fa-minus" />
-            </button>
-            <button type="button" class="btn btn-primary" @click="resetNumTeam">
-              <font-awesome-icon icon="fa-solid fa-arrow-rotate-left" />
-            </button>
           </div>
         </div>
       </div>
@@ -786,6 +796,17 @@ export default {
               @click="delBtnDisplay = !delBtnDisplay"
             >
               <font-awesome-icon icon="fa-regular fa-trash-can" />
+            </button>
+            <!-- 團隊減分及重置 -->
+            <button
+              type="button"
+              class="btn btn-primary me-2"
+              @click="minusNumTeam(), saveRank(), resetNumTeam()"
+            >
+              團<font-awesome-icon icon="fa-solid fa-minus" />
+            </button>
+            <button type="button" class="btn btn-primary" @click="resetNumTeam">
+              <font-awesome-icon icon="fa-solid fa-arrow-rotate-left" />
             </button>
           </div>
         </transition-group>
@@ -929,6 +950,7 @@ body {
 
 .rank-text {
   font-size: 16px;
+  white-space: nowrap;
 }
 
 /* 背景 */
@@ -1036,10 +1058,50 @@ body {
   width: 100%;
 }
 
+.rwd-rank-teamName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 42px;
+  height: 32px;
+  background: #fbbc05;
+  border-radius: 8px;
+  font-size: 24px;
+  box-shadow: 2px 2px 2px #222222;
+}
+.rwd-rank-num {
+  display: none;
+}
+.rwd-rank-text {
+  font-size: 18px;
+}
+.rwd-list-li {
+  padding-left: 20px !important;
+  margin: 2px 0px;
+}
+.rwd-list-li::after {
+  display: none;
+}
+.rank-score {
+  position: absolute;
+  right: 12px;
+  top: -4px;
+  font-size: 11px;
+}
+
 @media screen and (min-width: 992px) and (min-height: 667px) {
   /* 列表 */
   .list-outer {
     max-height: calc(100vh - 300px);
+  }
+  .rwd-list-li {
+    padding-left: 28px !important;
+  }
+  .rwd-rank-text {
+    font-size: 22px;
   }
 }
 
