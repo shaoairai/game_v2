@@ -327,7 +327,7 @@ export default {
             </div>
           </div>
           <!-- 題目 -->
-          <div class="topic-outer fs-3">
+          <div class="topic-outer">
             <div
               class="topic topic-bg d-flex align-items-center justify-content-center"
             >
@@ -533,6 +533,8 @@ body {
   width: 100%;
   height: 300px;
   border-radius: 8px;
+  letter-spacing: 8px;
+  font-size: 84px;
 }
 
 .fa-circle-left,
