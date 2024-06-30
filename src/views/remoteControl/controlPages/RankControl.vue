@@ -81,23 +81,27 @@ export default {
     },
     // 增加一人資料
     addData() {
-      // 建立新的資料
-      const newData = {
-        id: new Date().getTime(), // 資料一定要加入 id，使用隨機值
-        text: this.text,
-        score: 0,
-        sex: this.sex, // 0 女 1 男
-        team: this.team, // 隊伍
-        life: 1, // Tempo 遊戲的命數
-      };
-      // 新增加入資料
-      this.list.push(newData);
-      // 清空輸入框
-      this.text = "";
-      this.sex = "";
-      this.team = "";
+      if (this.text.trim() && this.sex && this.team) {
+        // 建立新的資料
+        const newData = {
+          id: new Date().getTime(), // 資料一定要加入 id，使用隨機值
+          text: this.text,
+          score: 0,
+          sex: this.sex, // 0 女 1 男
+          team: this.team, // 隊伍
+          life: 1, // Tempo 遊戲的命數
+        };
+        // 新增加入資料
+        this.list.push(newData);
+        // 清空輸入框
+        this.text = "";
+        this.sex = "";
+        this.team = "";
 
-      console.log(this.list);
+        console.log(this.list);
+      } else {
+        alert("欄位皆為必填！");
+      }
     },
     // 編輯人名
     editData(item) {
@@ -364,7 +368,13 @@ export default {
 
 <template>
   <div>
-    <div class="p-3 rank-bg">
+    <div
+      class="p-3 rank-bg"
+      :class="{
+        'd-flex flex-column justify-content-center align-items-center':
+          isDisplayGroup,
+      }"
+    >
       <div class="joinPerson" v-if="joinBtnDisplay">
         <div class="pop-bg"></div>
         <div
