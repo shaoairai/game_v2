@@ -42,12 +42,59 @@ export default {
       pause: false,
 
       topicArr: [
-        { id: 1, topic: "這個東西你聽到會感到", LAns: "開心", RAns: "難過" },
+        {
+          id: 1,
+          topic: "以下東西你會放進",
+          LAns: "冰箱",
+          RAns: "保險箱",
+          quiz: [
+            "水煎包",
+            "紅包",
+            "鈔票",
+            "戒指",
+            "芥末",
+            "地契",
+            "地瓜",
+            "地瓜葉",
+            "土地權狀",
+            "土托魚羹",
+            "現金",
+            "黃金",
+            "黃瓜",
+            "珠寶",
+            "豬腳",
+            "豬血糕",
+            "金項鍊",
+            "金針菇",
+          ],
+        },
         {
           id: 2,
-          topic: "這個東西通常你會在哪裡看到",
-          LAns: "室內",
-          RAns: "室外",
+          topic: "以下詞彙的單位是",
+          LAns: "一位一位",
+          RAns: "一隻一隻",
+          quiz: [
+            "公雞",
+            "宋仲基",
+            "豬公",
+            "相公",
+            "公雞",
+            "蜈蚣",
+            "醫生",
+            "服務生",
+            "考生",
+            "考雞",
+            "天鵝",
+            "企鵝",
+            "鴿子",
+            "兔子",
+            "白馬王子",
+            "新娘子",
+            "小狗",
+            "小姐",
+            "貴賓",
+            "貴賓狗",
+          ],
         },
       ],
       currentTopic: 0,
@@ -353,7 +400,7 @@ export default {
             </div>
           </div>
           <!-- 預設題組 -->
-          <div class="d-flex container" v-if="isChangeTopics">
+          <div class="d-flex flex-column container" v-if="isChangeTopics">
             <div class="ms-2" v-for="(defaultItem, i) in topicArr" :key="i">
               <button
                 type="button"
@@ -362,6 +409,13 @@ export default {
               >
                 題組{{ defaultItem.id }}
               </button>
+              <div>
+                題組{{ defaultItem.id }}題目列表： [<span
+                  v-for="(q, j) in defaultItem.quiz"
+                  :key="j"
+                  >{{ q }}，</span
+                >]
+              </div>
             </div>
           </div>
           <!-- 題目 -->
