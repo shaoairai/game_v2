@@ -259,6 +259,9 @@ export default {
                       :class="['flex-fill', teamColor[index]]"
                     >
                       <div class="teamBg position-relative my-1">
+                        <div class="teamBgChar">
+                          {{ String.fromCharCode(65 + index) }}
+                        </div>
                         <!-- <img
                   src="@/assets/img/santa.png"
                   alt="聖誕老人隊"
@@ -409,6 +412,14 @@ body {
 .teamScore {
   text-align: center;
   font-size: 72px;
+}
+.teamBgChar {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  line-height: 64px;
+  font-size: 64px;
+  opacity: 0.15;
 }
 
 /* 各隊顏色 */

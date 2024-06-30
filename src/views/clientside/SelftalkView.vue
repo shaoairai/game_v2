@@ -462,32 +462,37 @@ export default {
             </button>
             <!-- 設定按鈕 以外的按鈕 -->
             <transition-group name="set-btn">
-              <div class="setting-btns" v-if="setBtn">
+              <div class="setting-btns d-flex align-items-center" v-if="setBtn">
+                <div>
+                  抽過的題號{{ norepeatArr }} / 總題數
+                  {{ topicArr?.length - 1 }}
+                </div>
                 <!-- 啟用/關閉新增團隊按鈕 -->
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-primary ms-2"
                   @click="addGroup(), saveRank()"
                 >
                   <font-awesome-icon icon="fa-solid fa-user-plus" />
-                </button>
+                </button> -->
                 <!-- 啟用/關閉減分按鈕 -->
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-primary ms-2"
                   @click="minusBtnDisplay = !minusBtnDisplay"
                 >
                   <font-awesome-icon icon="fa-solid fa-minus" />
-                </button>
+                </button> -->
                 <!-- 啟用/關閉移除按鈕 -->
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-primary ms-2"
                   @click="delBtnDisplay = !delBtnDisplay"
                 >
                   <font-awesome-icon icon="fa-regular fa-trash-can" />
-                </button></div
-            ></transition-group>
+                </button> -->
+              </div>
+            </transition-group>
           </div>
         </div>
       </div>
