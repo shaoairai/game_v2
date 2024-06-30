@@ -335,7 +335,12 @@ export default {
             <button
               type="button"
               class="btn btn-primary ms-3"
-              style="width: 50px; height: 50px; border-radius: 100px"
+              style="
+                width: 50px;
+                height: 50px;
+                border-radius: 100px;
+                z-index: 999;
+              "
               @click="countReset(), pauseAudio()"
             >
               <font-awesome-icon icon="fa-solid fa-rotate-right" />
