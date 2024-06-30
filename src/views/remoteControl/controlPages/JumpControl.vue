@@ -1,7 +1,7 @@
 <script>
 import { RouterLink } from "vue-router";
 import { confirmPw } from "@/utils/localStoragePw";
-import tempo_words_in_a_hurry from "@/assets/countDown/tempo_words_in_a_hurry.mp3";
+import jump_music from "@/assets/jump/jump_music.mp3";
 
 // firebase
 import { db } from "@/utils/firebase.js";
@@ -53,7 +53,7 @@ export default {
       currentTopic: 0,
 
       // 音訊
-      tempo_words_in_a_hurry: tempo_words_in_a_hurry,
+      jump_music: jump_music,
 
       // 遠端控制路由
       controlRouter: "",
@@ -306,7 +306,7 @@ export default {
             </button>
             <!-- 音樂播放 -->
             <audio
-              :src="tempo_words_in_a_hurry"
+              :src="jump_music"
               controls
               muted
               ref="audioRef"
