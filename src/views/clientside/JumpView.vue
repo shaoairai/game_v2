@@ -41,13 +41,15 @@ export default {
       play: true,
       pause: false,
 
-      // topicArr: [
-      //   "1. 造詞題目：陸地上的動物",
-      //   "2. 造詞題目：甜的食物",
-      //   "3. 造詞題目：方形的東西",
-      //   "4. 造詞題目：國家或地名",
-      //   "5. 造詞題目：家裡看得到的東西",
-      // ],
+      topicArr: [
+        { id: 1, topic: "這個東西你聽到會感到", LAns: "開心", RAns: "難過" },
+        {
+          id: 2,
+          topic: "這個東西通常你會在哪裡看到",
+          LAns: "室內",
+          RAns: "室外",
+        },
+      ],
       currentTopic: 0,
 
       // 音訊
@@ -248,6 +250,18 @@ export default {
         vm.resetAudio();
       }
     },
+    // 預設題組
+    defaultTopics(param) {
+      const vm = this;
+      vm.topicArr.forEach((item) => {
+        if (param === item.id) {
+          // 放入題組的題目和答案
+          vm.topicTmp = item.topic;
+          vm.leftTextTmp = item.LAns;
+          vm.rightTextTmp = item.RAns;
+        }
+      });
+    },
   },
   computed: {},
   watch: {},
@@ -338,6 +352,18 @@ export default {
               </div>
             </div>
           </div>
+          <!-- 預設題組 -->
+          <div class="d-flex container" v-if="isChangeTopics">
+            <div class="ms-2" v-for="(defaultItem, i) in topicArr" :key="i">
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="defaultTopics(defaultItem.id)"
+              >
+                題組{{ defaultItem.id }}
+              </button>
+            </div>
+          </div>
           <!-- 題目 -->
           <div class="topic-outer fs-3">
             <div
@@ -353,7 +379,8 @@ export default {
           <!-- 左右題目 -->
           <div class="d-flex flex-row w-100">
             <div
-              class="center-line d-flex justify-content-center align-items-center py-5 w-100 fs-2"
+              class="center-line d-flex justify-content-center align-items-center py-3 w-100"
+              style="font-size: 64px"
             >
               <div v-if="isChangeTopics">
                 <input type="text" class="form-control" v-model="leftTextTmp" />
@@ -363,7 +390,8 @@ export default {
               </div>
             </div>
             <div
-              class="d-flex justify-content-center align-items-center py-5 w-100 fs-2"
+              class="d-flex justify-content-center align-items-center py-3 w-100"
+              style="font-size: 64px"
             >
               <div v-if="isChangeTopics">
                 <input
@@ -533,6 +561,7 @@ body {
 .sec {
   font-size: 144px;
   padding: 0 60px;
+  line-height: 144px;
 }
 
 /* 團隊分數標題 */
@@ -548,7 +577,7 @@ body {
 .teamBg {
   background: #f9f9f9;
   border-radius: 8px;
-  height: 200px;
+  height: 150px;
   margin: 0px 20px;
 }
 .teamScore {

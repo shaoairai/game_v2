@@ -141,15 +141,21 @@ export default {
     },
     // 團隊加分
     plusNumTeam() {
-      this.teamArr.forEach((item, index) => {
-        this.list.forEach((el, i) => {
-          if (el.team === item) {
-            this.list[i].score += Number(
-              this.$refs[`refTeamPlus${index}`][0].value
-            );
-          }
+      let bool = confirm("確定團隊加分嗎？");
+      if (bool) {
+        this.teamArr.forEach((item, index) => {
+          this.list.forEach((el, i) => {
+            if (el.team === item) {
+              this.list[i].score += Number(
+                this.$refs[`refTeamPlus${index}`][0].value
+              );
+            }
+          });
         });
-      });
+
+        this.saveRank();
+        this.resetNumTeam();
+      }
     },
     // 減分
     minusNum(item) {
@@ -179,13 +185,16 @@ export default {
     },
     // 排序
     sortRank() {
-      this.isRank = true;
+      let bool = confirm("確定活動結束，執行排行嗎？");
+      if (bool) {
+        this.isRank = true;
 
-      this.list.sort((a, b) => {
-        return b.score - a.score;
-      });
-      this.saveRank();
-      this.updateData({ isRank: true }, "/rank/");
+        this.list.sort((a, b) => {
+          return b.score - a.score;
+        });
+        this.saveRank();
+        this.updateData({ isRank: true }, "/rank/");
+      }
     },
     // 動態數量隊伍命名
     generateTeams() {
@@ -321,7 +330,9 @@ export default {
         // 此頁參數
         vm.displayAllFirbase = snapshot.val();
         vm.teamCnt = snapshot.val().rank.teamCnt;
-        vm.list = snapshot.val().rank.rankData;
+        vm.list = snapshot.val().rank.rankData
+          ? snapshot.val().rank.rankData
+          : [];
         vm.isRank = snapshot.val().rank.isRank;
         vm.isDisplayGroup = snapshot.val().rank.isDisplayGroup;
 
@@ -646,11 +657,12 @@ export default {
 
       <!-- 隊伍數量、團隊加減分 -->
       <div
+        v-if="!isDisplayGroup"
         class="container d-flex flex-wrap justify-content-between align-items-center px-0 py-3"
       >
         <div>
           <div class="text-white d-flex align-items-center">
-            <div class="pe-2">共{{ list.length }}人，分{{ teamCnt }}隊</div>
+            <div class="pe-2">共{{ list?.length }}人，分{{ teamCnt }}隊</div>
             <div
               class="cursor-pointer"
               @click="editTeamCnt"
@@ -706,7 +718,7 @@ export default {
             <button
               type="button"
               class="btn btn-primary me-2"
-              @click="plusNumTeam(), saveRank(), resetNumTeam()"
+              @click="plusNumTeam()"
             >
               團<font-awesome-icon icon="fa-solid fa-plus" />
             </button>
@@ -812,6 +824,7 @@ export default {
         </transition-group>
 
         <button
+          v-if="!isDisplayGroup"
           type="button"
           class="btn btn-primary ms-auto my-1"
           @click="reallocate()"
@@ -821,6 +834,7 @@ export default {
 
         <!-- 排序 -->
         <button
+          v-if="!isDisplayGroup"
           type="button"
           class="btn btn-primary ms-3 sort-check my-1"
           @click="sortRank()"
