@@ -54,7 +54,7 @@ export default {
       ],
 
       page: 0,
-      lastPage: 20,
+      lastPage: 19,
 
       // 遠端控制路由
       controlRouter: "",
