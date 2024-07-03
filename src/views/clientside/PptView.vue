@@ -27,7 +27,6 @@ import pptImg17 from "@/assets/pptImg/17.jpg";
 import pptImg18 from "@/assets/pptImg/18.jpg";
 import pptImg19 from "@/assets/pptImg/19.jpg";
 import pptImg20 from "@/assets/pptImg/20.jpg";
-import pptImg21 from "@/assets/pptImg/21.jpg";
 
 export default {
   mixins: [firebaseCrud],
@@ -54,7 +53,6 @@ export default {
         { id: "img-id-18", src: pptImg18, alt: "18" },
         { id: "img-id-19", src: pptImg19, alt: "19" },
         { id: "img-id-20", src: pptImg20, alt: "20" },
-        { id: "img-id-21", src: pptImg21, alt: "21" },
       ],
 
       // 是否顯示右上角跳至遊戲頁的按鈕
@@ -114,7 +112,7 @@ export default {
       }
 
       // 跳頁
-      if (this.currentIndex === 12) {
+      if (this.currentIndex === 11) {
         this.hasFinalGame = true;
       } else {
         this.hasFinalGame = false;
@@ -246,7 +244,7 @@ export default {
           class="btn btn-outline-primary me-3"
           style="width: 64px"
           :style="
-            currentIndex === 14 || currentIndex === 19 || currentIndex === 20
+            currentIndex === 13 || currentIndex === 18 || currentIndex === 19
               ? {
                   color: 'rgba(0,0,0,0)',
                   borderColor: 'rgba(0,0,0,0)',
@@ -266,7 +264,7 @@ export default {
           class="btn me-3"
           style="width: 64px"
           :style="
-            currentIndex === 14 || currentIndex === 19 || currentIndex === 20
+            currentIndex === 13 || currentIndex === 18 || currentIndex === 19
               ? {
                   color: 'rgba(0,0,0,0)',
                   borderColor: 'rgba(0,0,0,0)',
@@ -285,7 +283,7 @@ export default {
           class="btn"
           style="width: 64px"
           :style="
-            currentIndex === 14 || currentIndex === 19 || currentIndex === 20
+            currentIndex === 13 || currentIndex === 18 || currentIndex === 19
               ? {
                   color: 'rgba(0,0,0,0)',
                   borderColor: 'rgba(0,0,0,0)',

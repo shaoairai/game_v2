@@ -25,7 +25,6 @@ import pptImg17 from "@/assets/pptImg/17.jpg";
 import pptImg18 from "@/assets/pptImg/18.jpg";
 import pptImg19 from "@/assets/pptImg/19.jpg";
 import pptImg20 from "@/assets/pptImg/20.jpg";
-import pptImg21 from "@/assets/pptImg/21.jpg";
 
 export default {
   mixins: [firebaseCrud],
@@ -52,7 +51,6 @@ export default {
         { id: "img-id-18", src: pptImg18, alt: "18" },
         { id: "img-id-19", src: pptImg19, alt: "19" },
         { id: "img-id-20", src: pptImg20, alt: "20" },
-        { id: "img-id-21", src: pptImg21, alt: "21" },
       ],
 
       page: 0,
@@ -155,7 +153,7 @@ export default {
           />
         </button>
       </div>
-      <div class="p-1 w-100 h-50" v-if="page === 12">
+      <div class="p-1 w-100 h-50" v-if="page === 11">
         <button
           type="button"
           class="btn btn-primary w-100 h-100 fs-1"
