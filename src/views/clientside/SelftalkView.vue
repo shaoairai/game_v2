@@ -1,7 +1,7 @@
 <script>
 import { RouterLink } from "vue-router";
 import { confirmPw } from "@/utils/localStoragePw";
-import tempo_words_in_a_hurry from "@/assets/countDown/tempo_words_in_a_hurry.mp3";
+import selftalk from "@/assets/selftalk/selftalk.mp3";
 
 // firebase
 import { db } from "@/utils/firebase.js";
@@ -45,7 +45,7 @@ export default {
       ready: true,
 
       // 音訊
-      tempo_words_in_a_hurry: tempo_words_in_a_hurry,
+      selftalk: selftalk,
 
       // 遠端控制路由
       controlRouter: "",
@@ -56,6 +56,13 @@ export default {
     };
   },
   methods: {
+    // 貫串全場的音樂
+    triggerFadeIn(ref) {
+      this.$emit("fadeInAudio", ref);
+    },
+    triggerFadeOut(ref) {
+      this.$emit("fadeOutAudio", ref);
+    },
     // 音樂
     playAudio() {
       this.$refs.audioRef.play();
@@ -283,6 +290,9 @@ export default {
   mounted() {
     if (confirmPw(this.$router)) {
       this.onReadData();
+
+      // 停止貫串全場的音樂
+      this.triggerFadeOut("refMusic1Audio");
     }
   },
 };
@@ -370,7 +380,7 @@ export default {
             </button>
             <!-- 音樂播放 -->
             <audio
-              :src="tempo_words_in_a_hurry"
+              :src="selftalk"
               controls
               ref="audioRef"
               class="d-none"

@@ -28,6 +28,9 @@ import pptImg18 from "@/assets/pptImg/18.jpg";
 import pptImg19 from "@/assets/pptImg/19.jpg";
 import pptImg20 from "@/assets/pptImg/20.jpg";
 
+// 頒獎音樂
+import award from "@/assets/pptImg/award.mp3";
+
 export default {
   mixins: [firebaseCrud],
   data() {
@@ -55,6 +58,8 @@ export default {
         { id: "img-id-20", src: pptImg20, alt: "20" },
       ],
 
+      award: award,
+
       // 是否顯示右上角跳至遊戲頁的按鈕
       // gameListDisplay: false,
       // gameListCnt: 0,
@@ -74,6 +79,28 @@ export default {
       // 遠端控制路由
       controlRouter: "",
     };
+  },
+  watch: {
+    currentIndex() {
+      const vm = this;
+      // 控制父元件音樂
+      if (vm.currentIndex === 0) {
+        vm.triggerFadeIn("refMusic1Audio");
+      }
+      // 頒獎音樂
+      if (vm.currentIndex === 13) {
+        vm.triggerFadeOut("refMusic1Audio");
+        setTimeout(function () {
+          vm.$refs.refAwardAudio.volume = 1;
+          vm.$refs.refAwardAudio.play();
+        }, 900);
+      } else {
+        vm.fadeOutAudio(vm.$refs.refAwardAudio);
+        setTimeout(function () {
+          vm.triggerFadeIn("refMusic1Audio");
+        }, 900);
+      }
+    },
   },
   methods: {
     preSwitchImg(event) {
@@ -199,6 +226,39 @@ export default {
         }
       });
     },
+
+    // 貫串全場的音樂
+    triggerFadeIn(ref) {
+      this.$emit("fadeInAudio", ref);
+    },
+    triggerFadeOut(ref) {
+      this.$emit("fadeOutAudio", ref);
+    },
+
+    // 此元件的音樂fadein
+    fadeInAudio(audio) {
+      // const audio = this.$refs.refAwardAudio;
+      audio.volume = 0;
+      audio.play();
+      const fadeIn = setInterval(() => {
+        audio.volume = Math.min(1, audio.volume + 0.1);
+        if (audio.volume === 1) {
+          clearInterval(fadeIn);
+        }
+      }, 100); // 可以調整這裡的時間以控制淡入的速度
+    },
+    // 此元件的音樂fadeout
+    fadeOutAudio(audio) {
+      // const audio = this.$refs.refAwardAudio;
+      const fadeOut = setInterval(() => {
+        audio.volume = Math.max(0, audio.volume - 0.1);
+        if (audio.volume === 0) {
+          clearInterval(fadeOut);
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      }, 100); // 可以調整這裡的時間以控制淡出的速度
+    },
   },
   components: {
     RouterLink,
@@ -210,6 +270,9 @@ export default {
 
       // 圖片總數
       this.totalImgsCnt = this.imgList.length;
+
+      // 播放貫串全場的音樂
+      this.triggerFadeIn("refMusic1Audio");
     }
   },
 };
@@ -339,6 +402,15 @@ export default {
           </RouterLink>
         </div>
       </div>-->
+    </div>
+
+    <!-- 音樂音效 -->
+    <div class="d-flex align-items-center">
+      頒獎音樂：
+      <audio ref="refAwardAudio" controls loop>
+        <source :src="award" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
     </div>
   </div>
 </template>

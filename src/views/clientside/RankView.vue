@@ -60,6 +60,14 @@ export default {
     };
   },
   methods: {
+    // 貫串全場的音樂
+    triggerFadeIn(ref) {
+      this.$emit("fadeInAudio", ref);
+    },
+    triggerFadeOut(ref) {
+      this.$emit("fadeOutAudio", ref);
+    },
+
     // 修改總共隊伍數量
     editTeamCnt() {
       // 開啟修改
@@ -359,6 +367,9 @@ export default {
   mounted() {
     if (confirmPw(this.$router)) {
       this.onReadData();
+
+      // 播放貫串全場的音樂
+      this.triggerFadeIn("refMusic1Audio");
     }
   },
 };

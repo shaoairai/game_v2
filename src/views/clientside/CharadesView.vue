@@ -46,6 +46,14 @@ export default {
     };
   },
   methods: {
+    // 貫串全場的音樂
+    triggerFadeIn(ref) {
+      this.$emit("fadeInAudio", ref);
+    },
+    triggerFadeOut(ref) {
+      this.$emit("fadeOutAudio", ref);
+    },
+
     // 開始播放
     playAudio() {
       if (this.$refs.audioRef) {
@@ -167,6 +175,9 @@ export default {
   mounted() {
     if (confirmPw(this.$router)) {
       this.onReadData();
+
+      // 停止貫串全場的音樂
+      this.triggerFadeOut("refMusic1Audio");
     }
   },
 };

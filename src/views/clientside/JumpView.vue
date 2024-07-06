@@ -3,6 +3,10 @@ import { RouterLink } from "vue-router";
 import { confirmPw } from "@/utils/localStoragePw";
 import jump_music from "@/assets/jump/jump_music.mp3";
 
+// 倒數音效
+import sound54321 from "@/assets/timeupSound/sound54321.mp3";
+import timeup from "@/assets/timeupSound/timeup.mp3";
+
 // firebase
 import { db } from "@/utils/firebase.js";
 import { ref, onValue } from "firebase/database";
@@ -102,6 +106,9 @@ export default {
       // 音訊
       jump_music: jump_music,
 
+      sound54321: sound54321,
+      timeup: timeup,
+
       // 遠端控制路由
       controlRouter: "",
       // 遠端播放
@@ -117,6 +124,13 @@ export default {
     };
   },
   methods: {
+    // 貫串全場的音樂
+    triggerFadeIn(ref) {
+      this.$emit("fadeInAudio", ref);
+    },
+    triggerFadeOut(ref) {
+      this.$emit("fadeOutAudio", ref);
+    },
     // 音樂
     playAudio() {
       this.$refs.audioRef.play();
@@ -129,6 +143,7 @@ export default {
     countDwn() {
       const vm = this;
       vm.sec -= 1;
+
       if (vm.sec > 0) {
         vm.timer = setTimeout(vm.countDwn, 1000);
       }
@@ -137,6 +152,23 @@ export default {
       vm.pause = true;
 
       vm.updateData({ sec: vm.sec }, "/jump/");
+    },
+    // 倒數音效
+    secChange() {
+      const vm = this;
+      if (Number(vm.sec) <= 5 && Number(vm.sec) > 0) {
+        vm.$refs.refSound54321Audio.currentTime = 0;
+        vm.$refs.refSound54321Audio.play();
+      }
+      if (Number(vm.sec) === 0) {
+        vm.$refs.refTimeupAudio.currentTime = 0;
+        vm.$refs.refTimeupAudio.play();
+
+        vm.playMusic = false;
+        vm.countPause();
+        vm.resetAudio();
+        vm.updateData({ playMusic: vm.playMusic, sec: vm.sec }, "/jump/");
+      }
     },
     // 暫停
     countPause() {
@@ -293,7 +325,9 @@ export default {
       const vm = this;
       if (vm.playMusic) {
         vm.playAudio();
+        vm.secChange();
       } else {
+        vm.countPause();
         vm.resetAudio();
       }
     },
@@ -316,6 +350,9 @@ export default {
   mounted() {
     if (confirmPw(this.$router)) {
       this.onReadData();
+
+      // 停止貫串全場的音樂
+      this.triggerFadeOut("refMusic1Audio");
     }
   },
 };
@@ -341,7 +378,7 @@ export default {
                 border-radius: 100px;
                 z-index: 999;
               "
-              @click="countReset(), pauseAudio()"
+              @click="countReset(), remoteClickPlay()"
             >
               <font-awesome-icon icon="fa-solid fa-rotate-right" />
             </button>
@@ -578,6 +615,16 @@ export default {
       </div>
     </div>
   </div>
+
+  倒數音效：
+  <audio ref="refSound54321Audio" controls>
+    <source :src="sound54321" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+  <audio ref="refTimeupAudio" controls>
+    <source :src="timeup" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
 </template>
 
 <style lang="scss" scoped>
