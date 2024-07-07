@@ -14,6 +14,7 @@ import firebaseCrud from "@/utils/firebaseCrud";
 
 export default {
   mixins: [firebaseCrud],
+  props: ["musicAllDisplay"],
   data() {
     return {
       // 倒數計時
@@ -624,15 +625,17 @@ export default {
     </div>
   </div>
 
-  倒數音效：
-  <audio ref="refSound54321Audio" controls>
-    <source :src="sound54321" type="audio/mpeg" />
-    Your browser does not support the audio element.
-  </audio>
-  <audio ref="refTimeupAudio" controls>
-    <source :src="timeup" type="audio/mpeg" />
-    Your browser does not support the audio element.
-  </audio>
+  <div v-show="musicAllDisplay">
+    倒數音效：
+    <audio ref="refSound54321Audio" controls>
+      <source :src="sound54321" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <audio ref="refTimeupAudio" controls>
+      <source :src="timeup" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+  </div>
 </template>
 
 <style lang="scss" scoped>

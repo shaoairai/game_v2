@@ -33,6 +33,7 @@ import award from "@/assets/pptImg/award.mp3";
 
 export default {
   mixins: [firebaseCrud],
+  props: ["musicAllDisplay"],
   data() {
     return {
       imgList: [
@@ -405,12 +406,14 @@ export default {
     </div>
 
     <!-- 音樂音效 -->
-    <div class="d-flex align-items-center">
-      頒獎音樂：
-      <audio ref="refAwardAudio" controls loop>
-        <source :src="award" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
+    <div v-show="musicAllDisplay">
+      <div class="d-flex align-items-center">
+        頒獎音樂：
+        <audio ref="refAwardAudio" controls loop>
+          <source :src="award" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
     </div>
   </div>
 </template>
