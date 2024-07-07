@@ -402,13 +402,6 @@ export default {
             >
               <font-awesome-icon icon="fa-solid fa-play" />
             </button>
-            <!-- 音樂播放 -->
-            <audio
-              :src="jump_music"
-              controls
-              ref="audioRef"
-              class="d-none"
-            ></audio>
             <!-- 暫停計時 -->
             <button
               type="button"
@@ -626,6 +619,9 @@ export default {
   </div>
 
   <div v-show="musicAllDisplay">
+    遊戲音樂：
+    <audio :src="jump_music" controls loop ref="audioRef"></audio>
+
     倒數音效：
     <audio ref="refSound54321Audio" controls>
       <source :src="sound54321" type="audio/mpeg" />
@@ -635,6 +631,7 @@ export default {
       <source :src="timeup" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
+    <!-- 音樂播放 -->
   </div>
 </template>
 
