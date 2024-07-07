@@ -138,6 +138,23 @@ export default {
 
       vm.updateData({ sec: vm.sec }, "/jump/");
     },
+    // 倒數音效
+    secChange() {
+      const vm = this;
+      // if (Number(vm.sec) <= 5 && Number(vm.sec) > 0) {
+      //   vm.$refs.refSound54321Audio.currentTime = 0;
+      //   vm.$refs.refSound54321Audio.play();
+      // }
+      if (Number(vm.sec) === 0) {
+        // vm.$refs.refTimeupAudio.currentTime = 0;
+        // vm.$refs.refTimeupAudio.play();
+
+        // vm.playMusic = false;
+        vm.countPause();
+        vm.resetAudio();
+        // vm.updateData({ playMusic: vm.playMusic, sec: vm.sec }, "/jump/");
+      }
+    },
     // 暫停
     countPause() {
       const vm = this;
@@ -288,12 +305,22 @@ export default {
         vm.updateData({ playMusic: vm.playMusic, sec: vm.sec }, "/jump/");
       }
     },
+    // 重設音樂和數字
+    resetAudioAndSec() {
+      const vm = this;
+      vm.countReset();
+      vm.playMusic = true;
+      vm.remoteClickPlay();
+      vm.remotePlay();
+    },
     // 遠端播放
     remotePlay() {
       const vm = this;
       if (vm.playMusic) {
         vm.playAudio();
+        vm.secChange();
       } else {
+        vm.countPause();
         vm.resetAudio();
       }
     },
@@ -329,7 +356,7 @@ export default {
         <div class="container">
           <!-- 倒數計時器 -->
           <div
-            class="countDownArea d-flex flex-wrap justify-content-center align-items-center pb-2"
+            class="countDownArea d-flex flex-wrap justify-content-center align-items-center pb-2 pt-3"
           >
             <!-- 重新計時 -->
             <button
@@ -341,7 +368,7 @@ export default {
                 border-radius: 100px;
                 z-index: 999;
               "
-              @click="countReset(), pauseAudio()"
+              @click="resetAudioAndSec()"
             >
               <font-awesome-icon icon="fa-solid fa-rotate-right" />
             </button>

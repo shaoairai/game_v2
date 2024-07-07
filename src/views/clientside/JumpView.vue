@@ -320,6 +320,14 @@ export default {
         vm.updateData({ playMusic: vm.playMusic, sec: vm.sec }, "/jump/");
       }
     },
+    // 重設音樂和數字
+    resetAudioAndSec() {
+      const vm = this;
+      vm.countReset();
+      vm.playMusic = true;
+      vm.remoteClickPlay();
+      vm.remotePlay();
+    },
     // 遠端播放
     remotePlay() {
       const vm = this;
@@ -378,7 +386,7 @@ export default {
                 border-radius: 100px;
                 z-index: 999;
               "
-              @click="countReset(), remoteClickPlay()"
+              @click="resetAudioAndSec()"
             >
               <font-awesome-icon icon="fa-solid fa-rotate-right" />
             </button>
