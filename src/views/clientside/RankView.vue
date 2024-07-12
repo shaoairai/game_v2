@@ -540,7 +540,7 @@ export default {
                   {{ item.team }}
                 </div>
                 <div class="rank-text d-flex flex-grow-1 px-2">
-                  <!-- {{ item.sex === "0" ? "女" : "男" }} -->
+                  <!-- ({{ item.sex === "0" ? "女" : "男" }}) -->
                   <div class="flex-grow-1">{{ item.text }}</div>
                   <div>{{ item.score }}</div>
                 </div>
