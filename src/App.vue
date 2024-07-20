@@ -1,4 +1,5 @@
 <script>
+import firebaseAuth from "@/utils/firebaseAuth.js";
 import { RouterView } from "vue-router";
 
 // 背景音樂
@@ -83,6 +84,10 @@ export default {
         audio.currentTime = this.currentTime;
       }
     },
+  },
+  created() {
+    // 驗證是否可操作DB
+    firebaseAuth.methods.watchAuthState(this.$router);
   },
   mounted() {
     this.loadCurrentTime();
