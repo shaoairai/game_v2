@@ -14,8 +14,9 @@ import JumpControl from "@/views/remoteControl/controlPages/JumpControl.vue";
 import SelftalkControl from "@/views/remoteControl/controlPages/SelftalkControl.vue";
 import JumpView from "../views/clientside/JumpView.vue";
 import SelftalkView from "../views/clientside/SelftalkView.vue";
-import LoginDb from "../views/loginDb/LoginDb.vue";
-import RegisterDb from "../views/loginDb/RegisterDb.vue";
+import LoginAdmin from "../views/loginDb/LoginDb.vue";
+import RegisterAdmin from "../views/loginDb/RegisterDb.vue";
+import ResetPw from "../views/loginDb/ResetPw.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -26,14 +27,19 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/logindb",
-      name: "logindb",
-      component: LoginDb,
+      path: "/loginadmin",
+      name: "loginadmin",
+      component: LoginAdmin,
     },
     {
-      path: "/registerdb",
-      name: "registerdb",
-      component: RegisterDb,
+      path: "/registeradmin",
+      name: "registeradmin",
+      component: RegisterAdmin,
+    },
+    {
+      path: "/resetpw",
+      name: "resetpw",
+      component: ResetPw,
     },
     {
       path: "/ppt",

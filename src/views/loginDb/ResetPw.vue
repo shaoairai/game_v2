@@ -6,20 +6,33 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
       logoCircle: logoCircle,
       spinner: false,
     };
   },
   methods: {
     ...firebaseAuth.methods,
-    async handleLogin() {
+    async handleResetPassword() {
       const vm = this;
       this.spinner = true;
       try {
-        await vm.login(vm.email, vm.password, vm.$router);
+        // 讀取並解析允許註冊的 Email 列表
+        const allowedEmails = import.meta.env.VITE_APP_ALLOWED_EMAILS.split(
+          ","
+        );
+
+        // 檢查 Email 是否在允許列表中
+        if (!allowedEmails.includes(vm.email)) {
+          alert("寄送失敗，請確認您的信箱輸入是否正確。");
+          return;
+        }
+
+        await vm.sendPasswordResetEmail(this.email);
+        alert("寄送成功！請至信箱收信並重設密碼。");
+        vm.$router.push("/loginadmin");
       } catch (error) {
-        console.error("Login failed:", error);
+        console.error("Error sending password reset email:", error);
+        alert("寄送失敗，請確認您的信箱輸入是否正確。");
       } finally {
         this.spinner = false; // 完成後關閉 spinner
       }
@@ -46,11 +59,11 @@ export default {
                   <h3 class="text-center">共伴活動</h3>
                 </div>
                 <form
-                  @submit.prevent="handleLogin"
+                  @submit.prevent="handleResetPassword"
                   class="w-100 p-4 rounded-3"
                   style="background: rgba(255, 255, 255, 0.5)"
                 >
-                  <h4 class="text-center pb-2">管理者登入</h4>
+                  <h4 class="text-center pb-2">重設密碼</h4>
                   <div class="form-group mb-3">
                     <label for="email">帳號</label>
                     <input
@@ -62,27 +75,13 @@ export default {
                       required
                     />
                   </div>
-                  <div class="form-group mb-3">
-                    <label for="password">密碼</label>
-                    <input
-                      id="password"
-                      v-model="password"
-                      type="password"
-                      class="form-control mt-1"
-                      placeholder="請輸入密碼"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3 px-1 d-flex justify-content-between">
-                    <RouterLink to="registeradmin">註冊</RouterLink>
-                    <RouterLink to="resetpw">忘記密碼</RouterLink>
-                  </div>
+
                   <button
                     type="submit"
                     class="btn btn-primary w-100"
                     v-if="!spinner"
                   >
-                    登入
+                    寄送重設密碼郵件
                   </button>
                   <button
                     class="btn btn-primary w-100"
@@ -94,7 +93,7 @@ export default {
                       class="spinner-border spinner-border-sm"
                       aria-hidden="true"
                     ></span>
-                    <span role="status"> 驗證中...</span>
+                    <span role="status"> 寄送中...</span>
                   </button>
                 </form>
               </div>

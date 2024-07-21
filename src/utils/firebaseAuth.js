@@ -5,6 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
   getIdToken,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 // import { ref, set } from "firebase/database";
 
@@ -32,19 +33,22 @@ export default {
           email,
           password
         );
-        this.user = userCredential.user;
-        this.token = await this.getToken();
+        // 註冊後先登出，讓使用者重新登入
+        await signOut(auth);
+        // this.user = userCredential.user;
+        // this.token = await this.getToken();
         // await set(ref(db, "users/" + this.user.uid), {
         //   email: this.user.email,
         // });
         console.log("User registered:", this.user);
         console.log("User registered this.token:", this.token);
-        localStorage.setItem("user", JSON.stringify(this.user));
-        localStorage.setItem("token", this.token);
+        // localStorage.setItem("user", JSON.stringify(this.user));
+        // localStorage.setItem("token", this.token);
 
         alert("註冊成功，請重新登入");
-        router.push("/logindb");
+        router.push("/loginadmin");
       } catch (error) {
+        alert("註冊失敗！密碼過短或信箱帳號有誤");
         console.error("Error registering user:", error);
       }
     },
@@ -96,8 +100,18 @@ export default {
       return null;
     },
 
+    // 重設密碼
+    async sendPasswordResetEmail(email) {
+      try {
+        await sendPasswordResetEmail(auth, email);
+        console.log("Password reset email sent.");
+      } catch (error) {
+        console.error("Error sending password reset email:", error);
+      }
+    },
+
     // 只要進入網站就會進來判斷
-    watchAuthState(router) {
+    watchAuthState(router, route) {
       console.log("watchAuthState");
       onAuthStateChanged(auth, async (user) => {
         console.log(user);
@@ -110,7 +124,18 @@ export default {
           this.token = null;
           localStorage.removeItem("user");
           localStorage.removeItem("token");
-          router.push("/logindb");
+
+          // 路由如果不是在登入或註冊，則導向登入
+          const currentHash = window.location.hash;
+          const routeValue = currentHash.replace(/^#\//, "");
+          console.log(routeValue);
+          console.log(
+            routeValue != "registeradmin" && routeValue != "loginadmin"
+          );
+          console.log(router);
+          if (routeValue != "registeradmin" && routeValue != "loginadmin") {
+            router.push("/loginadmin");
+          }
         }
       });
     },

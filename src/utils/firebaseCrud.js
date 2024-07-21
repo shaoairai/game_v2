@@ -29,7 +29,7 @@ export default {
             alert("取得資料失敗，權限不足！");
           });
       } else {
-        alert("setData 請重新登入");
+        alert("尚未登入，請重新登入");
       }
     },
 
@@ -53,7 +53,7 @@ export default {
             alert("取得資料失敗，權限不足！");
           });
       } else {
-        alert("getData 請重新登入");
+        alert("尚未登入，請重新登入");
       }
     },
 
@@ -78,7 +78,7 @@ export default {
             alert("修改資料失敗，權限不足！");
           });
       } else {
-        alert("updateData 請重新登入");
+        alert("尚未登入，請重新登入");
       }
     },
 
@@ -98,7 +98,7 @@ export default {
             alert("刪除資料失敗，權限不足！");
           });
       } else {
-        alert("deleteData 請重新登入");
+        alert("尚未登入，請重新登入");
       }
     },
 
@@ -111,7 +111,7 @@ export default {
         await push(ref(db, path), dataToAdd);
         console.log("資料已成功新增到Firebase");
       } else {
-        alert("addData 請重新登入");
+        alert("尚未登入，請重新登入");
       }
     },
   },

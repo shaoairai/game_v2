@@ -87,7 +87,7 @@ export default {
   },
   created() {
     // 驗證是否可操作DB
-    firebaseAuth.methods.watchAuthState(this.$router);
+    firebaseAuth.methods.watchAuthState(this.$router, this.$route);
   },
   mounted() {
     this.loadCurrentTime();

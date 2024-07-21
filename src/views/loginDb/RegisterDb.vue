@@ -7,16 +7,21 @@ export default {
     return {
       email: "",
       password: "",
+      confirmPassword: "",
       logoCircle: logoCircle,
       spinner: false,
     };
+  },
+  computed: {
+    passwordsMatch() {
+      return this.password === this.confirmPassword;
+    },
   },
   methods: {
     ...firebaseAuth.methods,
     async handleRegister() {
       const vm = this;
       this.spinner = true;
-      console.log("handleRegister");
       try {
         await vm.register(vm.email, vm.password, vm.$router);
       } catch (error) {
@@ -52,6 +57,7 @@ export default {
                   style="background: rgba(255, 255, 255, 0.5)"
                 >
                   <h4 class="text-center pb-2">註冊成為管理者</h4>
+
                   <div class="form-group mb-3">
                     <label for="email">帳號</label>
                     <input
@@ -74,10 +80,31 @@ export default {
                       required
                     />
                   </div>
+                  <div class="form-group mb-3">
+                    <label for="confirmPassword">確認密碼</label>
+                    <input
+                      id="confirmPassword"
+                      v-model="confirmPassword"
+                      type="password"
+                      class="form-control mt-1"
+                      placeholder="請再次輸入密碼"
+                      required
+                    />
+                    <div
+                      v-if="confirmPassword && !passwordsMatch"
+                      class="text-danger mt-1 text-end"
+                    >
+                      密碼不相符
+                    </div>
+                  </div>
+                  <div class="mb-3 px-1 text-end">
+                    <RouterLink to="loginadmin">登入</RouterLink>
+                  </div>
                   <button
                     type="submit"
                     class="btn btn-primary w-100"
                     v-if="!spinner"
+                    :disabled="!passwordsMatch || spinner"
                   >
                     註冊
                   </button>
@@ -93,6 +120,9 @@ export default {
                     ></span>
                     <span role="status"> 註冊中...</span>
                   </button>
+                  <div class="py-2 text-center" style="opacity: 0.75">
+                    請先提供信箱給共伴活動，審核通過才能順利註冊成功喔！
+                  </div>
                 </form>
               </div>
             </div>

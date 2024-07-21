@@ -1,4 +1,5 @@
 <script>
+import firebaseAuth from "@/utils/firebaseAuth.js";
 import { RouterLink, RouterView } from "vue-router";
 
 // firebase
@@ -9,6 +10,10 @@ export default {
   components: {
     RouterLink,
     RouterView,
+  },
+  created() {
+    // 驗證是否可操作DB
+    firebaseAuth.methods.watchAuthState(this.$router, this.$route);
   },
   methods: {
     remoteSwitchPage(routerPage) {
