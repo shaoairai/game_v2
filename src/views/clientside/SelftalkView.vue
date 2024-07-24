@@ -382,6 +382,7 @@ export default {
             <audio
               :src="selftalk"
               controls
+              loop
               ref="audioRef"
               class="d-none"
             ></audio>

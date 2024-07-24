@@ -372,6 +372,7 @@ export default {
             <audio
               :src="tempo_words_in_a_hurry"
               controls
+              loop
               muted
               ref="audioRef"
               class="d-none"
